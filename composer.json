@@ -1,0 +1,31 @@
+{
+  "name": "codrasil/mediabox",
+  "description": "A File Manager for PHP",
+  "type": "library",
+  "require-dev": {
+    "phpunit/phpunit": "^9.1"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "John Lioneil Dionisio",
+      "email": "john.dionisio1@gmail.com"
+    }
+  ],
+  "require": {
+    "illuminate/filesystem": "^7.11"
+  },
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "Codrasil\\Mediabox\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Codrasil\\Mediabox\\Tests\\": "tests/"
+    }
+  }
+}

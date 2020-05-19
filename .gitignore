@@ -1,0 +1,5 @@
+/vendor
+/tests/directory
+/tests/coverage
+/demos
+.phpunit.result.cache
