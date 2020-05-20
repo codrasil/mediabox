@@ -287,4 +287,88 @@ class MediaboxTest extends TestCase
         $this->assertFileExists($this->basePath($expected[0]));
         $this->assertFileExists($this->basePath($expected[1]));
     }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_retrieve_total_file_size_of_the_directory()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($folder = 'New Folder');
+        $mediabox->addFile($file = "$folder/anotherFile.txt", 'hello world.');
+
+        // Actions
+        $actual = $mediabox->totalSize();
+        $expected = cm_human_filesize($mediabox->getItems()->sum('filesize'));
+
+        // Assertions
+        $this->assertSame($actual, $expected);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_retrieve_memory_usage_of_the_directory()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($folder = 'New Folder');
+        $mediabox->addFile($file = "$folder/anotherFile.txt", 'hello world.');
+
+        // Actions
+        $actual = $mediabox->memoryUsage();
+        $expected = cm_human_filesize(memory_get_usage(true));
+
+        // Assertions
+        $this->assertSame($actual, $expected);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_retrieve_total_disk_space_of_the_directory()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($folder = 'New Folder');
+        $mediabox->addFile($file = "$folder/anotherFile.txt", 'hello world.');
+
+        // Actions
+        $actual = $mediabox->totalDiskSpace();
+        $expected = cm_human_filesize(disk_total_space($basePath));
+
+        // Assertions
+        $this->assertSame($actual, $expected);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_retrieve_free_disk_space_of_the_directory()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($folder = 'New Folder');
+        $mediabox->addFile($file = "$folder/anotherFile.txt", 'hello world.');
+
+        // Actions
+        $actual = $mediabox->freeDiskSpace();
+        $expected = cm_human_filesize(disk_free_space($basePath));
+
+        // Assertions
+        $this->assertSame($actual, $expected);
+    }
 }

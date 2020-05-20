@@ -79,11 +79,12 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     /**
      * Retrieve the base path.
      *
+     * @param  string $path
      * @return string
      */
-    public function basePath()
+    public function basePath($path = '')
     {
-        return $this->basePath;
+        return $this->basePath.($path ? DIRECTORY_SEPARATOR.$path : $path);;
     }
 
     /**
@@ -113,6 +114,10 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      */
     public function onlyFolders()
     {
+        if (! is_dir($this->basePath)) {
+            return Collection::make([]);
+        }
+
         return Collection::make(
             $this->formatFileMetadata($this->directories($this->basePath))
         );
@@ -125,6 +130,14 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      */
     public function onlyFiles()
     {
+        if (is_file($this->basePath)) {
+            return Collection::make($this->formatFileMetadata([$this->basePath]));
+        }
+
+        if (! is_dir($this->basePath)) {
+            return Collection::make([]);
+        }
+
         return Collection::make(
             $this->formatFileMetadata($this->files($this->basePath))
         );
@@ -136,7 +149,7 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      * @param  array $files
      * @return \Illuminate\Support\Collection
      */
-    protected function formatFileMetadata($files)
+    protected function formatFileMetadata(array $files)
     {
         return array_map(function ($file) {
             return new File($file, $this->rootPath);
@@ -150,7 +163,74 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      */
     public function all()
     {
-        return $this->getItems();
+        return $this->refresh()->getItems();
+    }
+
+    /**
+     * Manually trigger to refresh items collection.
+     *
+     * @return __CLASS__
+     */
+    public function refresh()
+    {
+        $this->items = $this->getFilesAndFolders();
+
+        return $this;
+    }
+
+    /**
+     * Retrieve the full directory size.
+     *
+     * @return string
+     */
+    public function totalSize()
+    {
+        return cm_human_filesize($this->getItems()->sum('filesize'));
+    }
+
+    /**
+     * Retrieve the memory usage.
+     *
+     * @return string|integer
+     */
+    public function memoryUsage(): string
+    {
+        return cm_human_filesize(memory_get_usage(true));
+    }
+
+    /**
+     * Retrieve total disk space of the path.
+     *
+     * @return string
+     */
+    public function totalDiskSpace(): string
+    {
+        return cm_human_filesize(disk_total_space($this->rootPath()));
+    }
+
+    /**
+     * Retrieve total free disk space of the path.
+     *
+     * @return string
+     */
+    public function freeDiskSpace(): string
+    {
+        return cm_human_filesize(disk_free_space($this->rootPath()));
+    }
+
+    /**
+     * Retrieve the file or directory
+     * from given name.
+     *
+     * @param  string $name
+     * @param  string $key
+     * @return mixed
+     */
+    public function find($name, $key = 'basename')
+    {
+        return $this->all()->filter(function ($file) use ($name, $key) {
+            return $file[$key] == $this->basename($name);
+        })->first();
     }
 
     /**
