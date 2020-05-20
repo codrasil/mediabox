@@ -2,8 +2,10 @@
 
 namespace Codrasil\Mediabox;
 
+use Codrasil\Mediabox\File;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Mediabox extends Filesystem implements Contracts\MediaboxInterface
 {
@@ -37,7 +39,7 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      * Pass in the base path of files and
      * folders to be instanced.
      *
-     * @param string $path
+     * @param string $basePath
      * @param array  $rootPath
      */
     public function __construct($basePath, $rootPath = null)
@@ -84,7 +86,7 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      */
     public function basePath($path = '')
     {
-        return $this->basePath.($path ? DIRECTORY_SEPARATOR.$path : $path);;
+        return $this->basePath.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -231,6 +233,18 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
         return $this->all()->filter(function ($file) use ($name, $key) {
             return $file[$key] == $this->basename($name);
         })->first();
+    }
+
+    /**
+     * Retrieve the url from path.
+     *
+     * @param  \Codrasil\Mediabox\File $file
+     * @param  array                   $headers
+     * @return string
+     */
+    public function fetch(File $file, $headers = [])
+    {
+        return new BinaryFileResponse($file, 200, $headers);
     }
 
     /**

@@ -7,6 +7,7 @@ use Codrasil\Mediabox\File;
 use Codrasil\Mediabox\Mediabox;
 use Codrasil\Mediabox\Tests\TestCase;
 use ReflectionClass;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class MediaboxTest extends TestCase
 {
@@ -370,5 +371,25 @@ class MediaboxTest extends TestCase
 
         // Assertions
         $this->assertSame($actual, $expected);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_fetch_the_url_of_the_file()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFile($file = 'anotherFile.txt', 'hello world.');
+
+        // Actions
+        $file = $mediabox->find($file);
+        $actual = $mediabox->fetch($file);
+
+        // Assertions
+        $this->assertInstanceOf(BinaryFileResponse::class, $actual);
     }
 }
