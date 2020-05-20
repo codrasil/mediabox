@@ -2,8 +2,39 @@
 
 namespace Codrasil\Mediabox\Concerns;
 
+use Codrasil\Mediabox\Enums\FileKeys;
+
 trait CanAddFiles
 {
+    /**
+     * Add a file or folder to media.
+     *
+     * @param  string $path
+     * @param  array  $attributes
+     * @return __CLASS__
+     */
+    public function add(string $path, array $attributes = [])
+    {
+        $type = $attributes['type'] ?? FileKeys::DIR_KEY;
+        $parent = $attributes['parent'] ?? null;
+        $path = ($parent ? $parent.'/' : $parent).$path;
+
+        if ($type == FileKeys::DIR_KEY) {
+            return $this->addFolder(
+                $path,
+                $attributes['force'] ?? false,
+                $attributes['mode'] ?? 0777,
+                $attributes['recursive'] ?? true,
+            );
+        }
+
+        if ($type == FileKeys::FILE_KEY) {
+            return $this->addFile($path, $attributes['content'] ?? null);
+        }
+
+        return $this;
+    }
+
     /**
      * Add a folder from specified parameters.
      *
