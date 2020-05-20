@@ -9,12 +9,12 @@ use SplFileInfo;
 
 class File extends SplFileInfo implements ArrayAccess, JsonSerializable
 {
-	/**
-	 * The file attributes.
-	 *
-	 * @var array
-	 */
-	protected $attributes;
+    /**
+     * The file attributes.
+     *
+     * @var array
+     */
+    protected $attributes;
 
     /**
      * The file root path.
@@ -23,22 +23,22 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     protected $rootPath;
 
-	/**
-	 * The constructor class.
-	 *
-	 * @param string $path
+    /**
+     * The constructor class.
+     *
+     * @param string $path
      * @param string $rootPath
-	 */
-	public function __construct($path, $rootPath)
-	{
+     */
+    public function __construct($path, $rootPath)
+    {
         parent::__construct($path);
 
         $this->rootPath = $rootPath;
 
-		$this->attributes = $this->prepareAttributes(
-			pathinfo($path)
-		);
-	}
+        $this->attributes = $this->prepareAttributes(
+            pathinfo($path)
+        );
+    }
 
     /**
      * Retrieve the current path.
@@ -51,6 +51,16 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Retrieve the root path.
+     *
+     * @return string
+     */
+    public function getRootPath()
+    {
+        return $this->rootPath;
+    }
+
+    /**
      * Check if file exists.
      *
      * @return boolean
@@ -60,21 +70,21 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
         return file_exists($this->getPathname());
     }
 
-	/**
-	 * @return array
-	 */
-	public function toArray(): array
-	{
-		return $this->attributes;
-	}
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->attributes;
+    }
 
-	/**
-	 * @param  mixed $offset
-	 * @param  mixed $value
-	 * @return void
-	 */
-	public function offsetSet($offset, $value): void
-	{
+    /**
+     * @param  mixed $offset
+     * @param  mixed $value
+     * @return void
+     */
+    public function offsetSet($offset, $value): void
+    {
         if (is_null($offset)) {
             $this->attributes[] = $value;
         } else {
@@ -107,8 +117,8 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     public function offsetGet($offset)
     {
         return isset($this->attributes[$offset])
-        	 ? $this->attributes[$offset]
-        	 : null;
+             ? $this->attributes[$offset]
+             : null;
     }
 
     /**
@@ -165,14 +175,17 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
         return array_merge($attributes, [
             Enums\FileKeys::ACCESSED => new DateTime(strtotime($this->getATime())),
             Enums\FileKeys::CHANGED => new DateTime(strtotime($this->getCTime())),
+            Enums\FileKeys::NAME => $this->name(),
+            Enums\FileKeys::FILENAME => $this->filename(),
             Enums\FileKeys::PATHNAME => $pathname = $this->getPathname(),
             Enums\FileKeys::TYPE => $this->getType(),
             Enums\FileKeys::FILESIZE => $filesize = filesize($pathname),
             Enums\FileKeys::SIZE => cm_human_filesize($filesize),
-            Enums\FileKeys::MODIFIED => filemtime($pathname),
+            Enums\FileKeys::MODIFIED => new DateTime(strtotime(filemtime($pathname))),
             Enums\FileKeys::FILEPERMISSIONS => $fileperms = fileperms($pathname),
             Enums\FileKeys::PERMISSION => substr(sprintf("%o", $fileperms), -4),
             Enums\FileKeys::OWNER => posix_getpwuid(fileowner($pathname)),
+            Enums\FileKeys::FRAGMENT => $this->fragment(),
         ]);
     }
 
@@ -213,7 +226,17 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function name()
     {
-        return basename($this->attributes[Enums\FileKeys::PATHNAME]);
+        return basename($this->getPathname());
+    }
+
+    /**
+     * Retrieve the file pathname.
+     *
+     * @return string
+     */
+    public function filename()
+    {
+        return ltrim($this->getCurrentPath(), '/');
     }
 
     /**
@@ -291,10 +314,12 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      *
      * @return mixed
      */
-    public function previewUrl()
+    public function fragment()
     {
-        $path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->rootPath.$this->getCurrentPath());
+        if (is_file($this->rootPath.$this->getCurrentPath())) {
+            return http_build_query(['f' => $this->getCurrentPath()]);
+        }
 
-        return $_SERVER['HTTP_HOST'].$path;
+        return '?'.http_build_query(['p' => $this->getCurrentPath()]);
     }
 }
