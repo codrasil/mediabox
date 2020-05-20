@@ -244,6 +244,31 @@ class MediaboxTest extends TestCase
      * @group  mediabox:unit
      * @return void
      */
+    public function it_can_move_a_file()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($folder = 'New Folder');
+        $mediabox->addFile("$folder/anotherFile.txt");
+        $mediabox->addFile($file = 'newFile.txt');
+
+        // Actions
+        $mediabox->move($file, $expected[] = 'oldFile.txt');
+        $mediabox->move($folder, $expected[] = 'Old Folder');
+
+        // Assertions
+        $this->assertFileDoesNotExist($this->basePath($folder));
+        $this->assertFileDoesNotExist($this->basePath($file));
+        $this->assertFileExists($this->basePath($expected[0]));
+        $this->assertFileExists($this->basePath($expected[1]));
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
     public function it_can_copy_a_file()
     {
         // Arrangements
