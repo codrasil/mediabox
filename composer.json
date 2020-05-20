@@ -3,7 +3,8 @@
   "description": "A File Manager for PHP",
   "type": "library",
   "require-dev": {
-    "phpunit/phpunit": "^9.1"
+    "phpunit/phpunit": "^9.1",
+    "orchestra/testbench": "^5.2"
   },
   "license": "MIT",
   "authors": [
@@ -26,6 +27,16 @@
   "autoload-dev": {
     "psr-4": {
       "Codrasil\\Mediabox\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Codrasil\\Mediabox\\MediaboxServiceProvider"
+      ]
+    },
+    "branch-alias": {
+      "dev-master": "1.0.0-dev"
     }
   }
 }
