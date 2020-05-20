@@ -25,6 +25,8 @@ trait CanRenameFiles
      */
     public function rename($path, $target)
     {
-        return parent::move($this->rootPath($path), $this->rootPath($target));
+        $target = dirname($this->rootPath($path)).DIRECTORY_SEPARATOR.$target;
+
+        return parent::move($this->rootPath($path), $target);
     }
 }
