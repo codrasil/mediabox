@@ -7,6 +7,11 @@ use Illuminate\Support\Collection;
 
 class Mediabox extends Filesystem implements Contracts\MediaboxInterface
 {
+    use Concerns\CanAddFiles,
+        Concerns\CanCopyFiles,
+        Concerns\CanDeleteFiles,
+        Concerns\CanRenameFiles;
+
     /**
      * The base path to be instanced.
      *
@@ -55,6 +60,8 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
         if ($this->rootPath == $path) {
             return $path;
         }
+
+        $path = str_replace($this->rootPath, '', $path);
 
         return $this->rootPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
@@ -144,5 +151,24 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     public function all()
     {
         return $this->getItems();
+    }
+
+    /**
+     * Before calling the parent Filesystem class' methods,
+     * append the root path to the path and target paths.
+     *
+     * @param  string $method
+     * @param  mixed  $attributes
+     * @return mixed
+     */
+    public function __call($method, $attributes)
+    {
+        foreach ((array) $attributes as $i => $attribute) {
+            $attributes[$i] = $this->rootPath($attribute);
+        }
+
+        call_user_func_array([$this, $method], $attributes);
+
+        return $this;
     }
 }

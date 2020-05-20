@@ -7,6 +7,24 @@ use Codrasil\Mediabox\Tests\TestCase;
 
 class FileTest extends TestCase
 {
+    /** setup */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->path = realpath(dirname(__DIR__).'/../storage');
+
+        $this->addDummyFilesAndFolders($this->path);
+    }
+
+    /** remove test files */
+    public function tearDown(): void
+    {
+        $this->removeFilesAndFolders($this->path);
+
+        parent::tearDown();
+    }
+
     /**
      * @test
      * @group codrasil:mediabox
@@ -18,7 +36,7 @@ class FileTest extends TestCase
         $path = $this->path;
 
         // Actions
-        $actual = new File($this->path);
+        $actual = new File($this->path, $path);
 
         // Assertions
         $this->assertIsString($actual->getPathname());
@@ -32,7 +50,7 @@ class FileTest extends TestCase
      */
     public function it_should_extend_the_splfileinfo_class()
     {
-        $file = new File($this->path);
+        $file = new File($this->path, $this->path);
 
         $this->assertInstanceOf('SplFileInfo', $file);
     }
@@ -45,7 +63,7 @@ class FileTest extends TestCase
     public function it_can_return_attributes_as_json()
     {
         // Arrangements
-        $file = new File($this->path);
+        $file = new File($this->path, $this->path);
 
         // Actions
         $actual = $file->toJson();
@@ -62,7 +80,7 @@ class FileTest extends TestCase
     public function it_can_return_attributes_as_array()
     {
         // Arrangements
-        $file = new File($this->path);
+        $file = new File($this->path, $this->path);
 
         // Actions
         $actual = $file->toArray();
