@@ -392,4 +392,24 @@ class MediaboxTest extends TestCase
         // Assertions
         $this->assertInstanceOf(BinaryFileResponse::class, $actual);
     }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_download_the_file()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFile($file = 'anotherFile.txt', 'hello world.');
+
+        // Actions
+        $file = $mediabox->find($file);
+        $actual = $mediabox->download($file);
+
+        // Assertions
+        $this->assertInstanceOf(BinaryFileResponse::class, $actual);
+    }
 }
