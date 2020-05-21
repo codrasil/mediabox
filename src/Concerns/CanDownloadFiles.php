@@ -20,6 +20,18 @@ trait CanDownloadFiles
     protected $zip;
 
     /**
+     * Retrieve the url from path.
+     *
+     * @param  \Codrasil\Mediabox\File $file
+     * @param  array                   $headers
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function fetch(File $file, $headers = [])
+    {
+        return new BinaryFileResponse($file, 200, $headers);
+    }
+
+    /**
      * Download the given file.
      *
      * @param  \Codrasil\Mediabox\File $file
@@ -41,7 +53,7 @@ trait CanDownloadFiles
      * Zip the given file or folder.
      *
      * @param  string $path
-     * @return string
+     * @return mixed
      */
     public function zip($path)
     {
@@ -66,6 +78,10 @@ trait CanDownloadFiles
     {
         $directory = rtrim($directory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
         $files = scandir($directory.$subDirectory);
+
+        if (count($files) <= 2) {
+            $this->zip->addFromString('__EMPTY__', '');
+        }
 
         foreach ($files as $file) {
             if (in_array($file, ['.', '..'])) {

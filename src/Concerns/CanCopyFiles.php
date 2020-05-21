@@ -14,7 +14,6 @@ trait CanCopyFiles
     public function copy($path, $target)
     {
         if (is_dir($this->rootPath($path))) {
-            $target = dirname($this->rootPath($path)).DIRECTORY_SEPARATOR.$target;
             return $this->copyDirectory($path, $target);
         }
 
