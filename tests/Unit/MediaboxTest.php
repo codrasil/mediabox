@@ -65,6 +65,25 @@ class MediaboxTest extends TestCase
      * @group  mediabox:unit
      * @return void
      */
+    public function it_returns_the_current_path()
+    {
+        // Arrangements
+        $basePath = $this->basePath.DIRECTORY_SEPARATOR.'folder';
+        $mediabox = new Mediabox($basePath, $this->basePath.DIRECTORY_SEPARATOR);
+
+        // Actions
+        $currentPath = $mediabox->getCurrentPath();
+        $expectedPath = str_replace($mediabox->getRootPath(), '', $currentPath);
+
+        // Assertions
+        $this->assertSame($expectedPath, $currentPath);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
     public function it_can_return_an_object_of_files_from_the_given_base_path()
     {
         // Arrangements
@@ -277,16 +296,20 @@ class MediaboxTest extends TestCase
         $mediabox = new Mediabox($basePath);
         $mediabox->addFolder($folder = 'New Folder');
         $mediabox->addFile($file = "$folder/anotherFile.txt");
+        $mediabox->addFolder("$folder/second");
+        $mediabox->addFile($second = "$folder/second/anotherFile.txt");
 
         // Actions
-        $mediabox->copyDirectory($folder, $expected[] = "New Folder (2)");
+        $mediabox->copyDirectory($folder, $expected[] = 'New Folder (2)');
         $mediabox->copy($file, $expected[] = "$folder/copyFile.txt");
+        $mediabox->copy($file, $expected[] = "$folder/second/copyFile2.txt");
 
         // Assertions
         $this->assertFileExists($this->basePath($folder));
-        $this->assertFileExists($this->basePath($file));
         $this->assertFileExists($this->basePath($expected[0]));
+        $this->assertFileExists($this->basePath($file));
         $this->assertFileExists($this->basePath($expected[1]));
+        $this->assertFileExists($this->basePath($expected[2]));
     }
 
     /**
@@ -371,6 +394,26 @@ class MediaboxTest extends TestCase
 
         // Assertions
         $this->assertSame($actual, $expected);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_retrieve_file_count_on_current_directory()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFile($files[] = 'anotherFile.txt', 'hello world.');
+        $mediabox->addFile($files[] = 'anotherFile2.txt', 'hello world.');
+
+        // Actions
+        $count = $mediabox->totalFileCount();
+
+        // Assertions
+        $this->assertSame(count($files), $count);
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Codrasil\Mediabox;
 use Codrasil\Mediabox\File;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Mediabox extends Filesystem implements Contracts\MediaboxInterface
 {
@@ -37,6 +36,13 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     protected $rootPath;
 
     /**
+     * Toggle hidden file visibility.
+     *
+     * @var boolean
+     */
+    protected $showHiddenFiles = false;
+
+    /**
      * Pass in the base path of files and
      * folders to be instanced.
      *
@@ -65,8 +71,29 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
         }
 
         $path = str_replace($this->rootPath, '', $path);
+        $path = ltrim($path, DIRECTORY_SEPARATOR);
 
         return $this->rootPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Retrieve the root path.
+     *
+     * @return string
+     */
+    public function getRootPath()
+    {
+        return $this->rootPath;
+    }
+
+    /**
+     * Retrieve the current path.
+     *
+     * @return string
+     */
+    public function getCurrentPath()
+    {
+        return str_replace($this->getRootPath(), '', $this->basePath) ?: DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -142,7 +169,7 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
         }
 
         return Collection::make(
-            $this->formatFileMetadata($this->files($this->basePath))
+            $this->formatFileMetadata($this->files($this->basePath, $this->showHiddenFiles))
         );
     }
 
@@ -222,6 +249,16 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     }
 
     /**
+     * Retrieve the total file count.
+     *
+     * @return integer
+     */
+    public function totalFileCount(): int
+    {
+        return $this->getItems()->count();
+    }
+
+    /**
      * Retrieve the file or directory
      * from given name.
      *
@@ -237,15 +274,14 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     }
 
     /**
-     * Retrieve the url from path.
+     * Toggle hidden file visibility.
      *
-     * @param  \Codrasil\Mediabox\File $file
-     * @param  array                   $headers
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @param  boolean $show
+     * @return void
      */
-    public function fetch(File $file, $headers = [])
+    public function showHiddenFiles($show = true)
     {
-        return new BinaryFileResponse($file, 200, $headers);
+        $this->showHiddenFiles = $show;
     }
 
     /**
@@ -258,6 +294,10 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      */
     public function __call($method, $attributes)
     {
+        if (method_exists(Collection::class, $method)) {
+            return call_user_func_array([$this->getItems(), $method], $attributes);
+        }
+
         foreach ((array) $attributes as $i => $attribute) {
             $attributes[$i] = $this->rootPath($attribute);
         }

@@ -88,4 +88,25 @@ class FileTest extends TestCase
         // Assertions
         $this->assertIsArray($actual);
     }
+
+    /**
+     * @test
+     * @group codrasil:mediabox
+     * @group mediabox:file
+     */
+    public function it_can_return_the_copy_name_of_a_file()
+    {
+        // Arrangements
+        $path = $this->path.DIRECTORY_SEPARATOR.'sample.txt';
+        $file = new File($path, $this->path);
+
+        // Actions
+        $actual[] = $file->getCopyName();
+        $actual[] = $file->getCopyName($date = date('Y-m-d'));
+
+        // Assertions
+        $this->assertIsString($actual[0]);
+        $this->assertSame($actual[0], './Copy of sample.txt');
+        $this->assertSame($actual[1], "./{$date}sample.txt");
+    }
 }

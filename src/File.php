@@ -3,6 +3,7 @@
 namespace Codrasil\Mediabox;
 
 use ArrayAccess;
+use Codrasil\Mediabox\Enums\IconKeys;
 use DateTime;
 use JsonSerializable;
 use SplFileInfo;
@@ -179,13 +180,15 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
             Enums\FileKeys::FILENAME => $this->filename(),
             Enums\FileKeys::PATHNAME => $pathname = $this->getPathname(),
             Enums\FileKeys::TYPE => $this->getType(),
-            Enums\FileKeys::FILESIZE => $filesize = filesize($pathname),
-            Enums\FileKeys::SIZE => cm_human_filesize($filesize),
-            Enums\FileKeys::MODIFIED => new DateTime(strtotime(filemtime($pathname))),
+            Enums\FileKeys::FILESIZE => $filesize = $this->filesize(),
+            Enums\FileKeys::SIZE => $this->size(),
+            Enums\FileKeys::MODIFIED => $this->modified(),
             Enums\FileKeys::FILEPERMISSIONS => $fileperms = fileperms($pathname),
             Enums\FileKeys::PERMISSION => substr(sprintf("%o", $fileperms), -4),
             Enums\FileKeys::OWNER => posix_getpwuid(fileowner($pathname)),
             Enums\FileKeys::FRAGMENT => $this->fragment(),
+            Enums\FileKeys::MIMETYPE => $this->mimetype(),
+            Enums\FileKeys::ICON => $this->icon(),
         ]);
     }
 
@@ -256,7 +259,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function filesize()
     {
-        return $this->attributes[Enums\FileKeys::FILESIZE];
+        return filesize($this->getRealpath());
     }
 
     /**
@@ -266,7 +269,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function size()
     {
-        return $this->attributes[Enums\FileKeys::SIZE];
+        return cm_human_filesize($this->filesize());
     }
 
     /**
@@ -276,7 +279,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function modified()
     {
-        return $this->attributes[Enums\FileKeys::MODIFIED];
+        return date('Y-m-d H:i:s', filemtime($this->getRealPath()));
     }
 
     /**
@@ -324,6 +327,16 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Retrieve the file accessed.
+     *
+     * @return string
+     */
+    public function mimetype()
+    {
+        return mime_content_type($this->getRealpath());
+    }
+
+    /**
      * Retrieve the copy name of the file.
      * e.g. Copy of file.txt
      *
@@ -333,9 +346,22 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function getCopyName($prefix = 'Copy of ', $suffix = null)
     {
+        $dir = dirname($this->filename()).DIRECTORY_SEPARATOR;
         $name = pathinfo($this->filename(), PATHINFO_FILENAME);
+
         $extension = $this->getExtension() ? '.'.$this->getExtension() : null;
 
-        return $prefix.$name.$suffix.$extension;
+        return $dir.$prefix.$name.$suffix.$extension;
+    }
+
+    /**
+     * Retrieve the icon for the file.
+     * Uses an Enum class of icon classes.
+     *
+     * @return IconKeys
+     */
+    public function icon()
+    {
+        return IconKeys::guess($this->getExtension());
     }
 }
