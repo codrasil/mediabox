@@ -9,10 +9,15 @@ trait CanCopyFiles
      *
      * @param  string $path
      * @param  string $target
-     * @return bool
+     * @return boolean
      */
     public function copy($path, $target)
     {
+        if (is_dir($this->rootPath($path))) {
+            $target = dirname($this->rootPath($path)).DIRECTORY_SEPARATOR.$target;
+            return $this->copyDirectory($path, $target);
+        }
+
         return parent::copy($this->rootPath($path), $this->rootPath($target));
     }
 

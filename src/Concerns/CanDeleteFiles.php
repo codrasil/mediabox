@@ -7,12 +7,12 @@ trait CanDeleteFiles
     /**
      * Delete the files or folders path.
      *
-     * @param  string|array  $paths
-     * @return bool
+     * @param  string|array $paths
+     * @return boolean
      */
     public function delete($paths)
     {
-        foreach ($paths as $path) {
+        foreach ((array) $paths as $path) {
             if (is_dir($this->rootPath($path))) {
                 $this->deleteFolder($path);
             } elseif (is_file($this->rootPath($path))) {
@@ -26,7 +26,7 @@ trait CanDeleteFiles
     /**
      * Delete the given folder.
      *
-     * @param  string|array $path
+     * @param  string|array $paths
      * @return void
      */
     public function deleteFolder($paths)
