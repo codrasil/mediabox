@@ -56,6 +56,8 @@ trait CanAddFiles
     /**
      * Add a new file to path.
      *
+     * phpcs:disable
+     *
      * @param  string      $path
      * @param  string|null $content
      * @return __CLASS__

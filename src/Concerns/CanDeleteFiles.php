@@ -43,7 +43,7 @@ trait CanDeleteFiles
     /**
      * Delete the given file.
      *
-     * @param  string|array $path
+     * @param  string|array $paths
      * @return void
      */
     public function deleteFile($paths)

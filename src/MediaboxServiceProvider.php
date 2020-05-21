@@ -76,7 +76,10 @@ class MediaboxServiceProvider extends ServiceProvider
         $this->app->bind(MediaboxInterface::class, Mediabox::class);
 
         $this->app->singleton(Mediabox::class, function ($app) {
-            return new Mediabox($app['request']->get('p') ?? config('mediabox.base_path'), config('mediabox.root_path'));
+            return new Mediabox(
+                $app['request']->get('p') ?? config('mediabox.base_path'),
+                config('mediabox.root_path')
+            );
         });
     }
 

@@ -69,7 +69,7 @@ class MediaboxController extends Controller
      */
     public function move(Request $request)
     {
-        //
+        return response()->json();
     }
 
     /**

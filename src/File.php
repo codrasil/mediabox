@@ -124,7 +124,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     /**
      * Convert the object to its JSON representation.
      *
-     * @param  int  $options
+     * @param  integer $options
      * @return string
      */
     public function toJson($options = 0)
