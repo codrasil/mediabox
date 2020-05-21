@@ -5,6 +5,7 @@ namespace Codrasil\Mediabox\Http\Controllers;
 use Codrasil\Mediabox\Contracts\MediaboxInterface;
 use Codrasil\Mediabox\Enums\FileKeys;
 use Codrasil\Mediabox\File;
+use Codrasil\Mediabox\Http\Resources\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -34,7 +35,7 @@ class MediaboxController extends Controller
      */
     public function index()
     {
-        return response()->json($this->mediabox->all());
+        return MediaResource::collection($this->mediabox->all());
     }
 
     /**
@@ -93,7 +94,7 @@ class MediaboxController extends Controller
      */
     public function show(Request $request, File $file)
     {
-        return response()->json($file);
+        return new MediaResource($file);
     }
 
     /**
@@ -107,16 +108,5 @@ class MediaboxController extends Controller
         return response()->json(
             $this->mediabox->delete($request->input('paths'))
         );
-    }
-
-    /**
-     * Download the requested file.
-     *
-     * @param  \Codrasil\Mediabox\File $file
-     * @return \Illuminate\Http\Response
-     */
-    public function download(File $file)
-    {
-        return $this->mediabox->download($file);
     }
 }

@@ -52,7 +52,7 @@ class MediaboxServiceProvider extends ServiceProvider
 
         $this->app['router']->bind('file', function ($value) {
             $mediabox = new Mediabox($value, config('mediabox.root_path'));
-            return new File($mediabox->all()->first(), config('mediabox.root_path'));
+            return new File($mediabox->rootPath($value), config('mediabox.root_path'));
         });
     }
 
@@ -76,10 +76,18 @@ class MediaboxServiceProvider extends ServiceProvider
         $this->app->bind(MediaboxInterface::class, Mediabox::class);
 
         $this->app->singleton(Mediabox::class, function ($app) {
-            return new Mediabox(
+            $mediabox = new Mediabox(
                 $app['request']->get('p') ?? config('mediabox.base_path'),
                 config('mediabox.root_path')
             );
+
+            $mediabox->showHiddenFiles(
+                config('mediabox.allow_hidden_files_toggle_via_url')
+                    ? filter_var($app['request']->get('h') ?: false, FILTER_VALIDATE_BOOLEAN)
+                    : config('mediabox.show_hidden_files', false)
+            );
+
+            return $mediabox;
         });
     }
 

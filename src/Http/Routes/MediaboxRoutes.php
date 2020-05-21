@@ -17,10 +17,9 @@ abstract class MediaboxRoutes
         if (! Route::hasMacro('mediaResource')) {
             Route::macro('mediaResource', function ($name, $controller) {
                 Route::get("$name", "$controller@index")->name("$name.index");
-                Route::get("$name/{media}", "$controller@show")->name("$name.show");
+                Route::get("$name/{media}", "$controller@show")->where('media', '.*')->name("$name.show");
                 Route::patch("$name/{media}/rename", "$controller@rename")->where('media', '.*')->name("$name.rename");
-                Route::post("$name/{media}/copy", "$controller@copy")->name("$name.copy");
-                Route::post("$name/{media}/download", "$controller@download")->name("$name.download");
+                Route::post("$name/{media}/copy", "$controller@copy")->where('media', '.*')->name("$name.copy");
                 Route::delete("$name/delete", "$controller@delete")->name("$name.delete");
                 Route::patch("$name/move", "$controller@move")->name("$name.move");
                 Route::post("$name/add", "$controller@add")->name("$name.add");
