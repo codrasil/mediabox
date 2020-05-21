@@ -19,10 +19,11 @@ abstract class MediaboxRoutes
                 Route::get("$name", "$controller@index")->name("$name.index");
                 Route::get("$name/{media}", "$controller@show")->name("$name.show");
                 Route::patch("$name/{media}/rename", "$controller@rename")->where('media', '.*')->name("$name.rename");
+                Route::post("$name/{media}/copy", "$controller@copy")->name("$name.copy");
+                Route::post("$name/{media}/download", "$controller@download")->name("$name.download");
                 Route::delete("$name/delete", "$controller@delete")->name("$name.delete");
                 Route::patch("$name/move", "$controller@move")->name("$name.move");
                 Route::post("$name/add", "$controller@add")->name("$name.add");
-                Route::post("$name/copy", "$controller@copy")->name("$name.copy");
             });
         }
     }

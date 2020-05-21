@@ -12,6 +12,7 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     use Concerns\CanAddFiles,
         Concerns\CanCopyFiles,
         Concerns\CanDeleteFiles,
+        Concerns\CanDownloadFiles,
         Concerns\CanRenameFiles;
 
     /**
@@ -240,7 +241,7 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      *
      * @param  \Codrasil\Mediabox\File $file
      * @param  array                   $headers
-     * @return string
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function fetch(File $file, $headers = [])
     {

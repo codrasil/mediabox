@@ -53,11 +53,12 @@ class MediaboxController extends Controller
     /**
      * Copy the file to a target destination.
      *
+     * @param  \Codrasil\Mediabox\File $file
      * @return \Illuminate\Http\Response
      */
-    public function copy()
+    public function copy(File $file)
     {
-        //
+        return response()->json($this->mediabox->copy($file->getRealpath(), $file->getCopyName()));
     }
 
     /**
@@ -106,5 +107,16 @@ class MediaboxController extends Controller
         return response()->json(
             $this->mediabox->delete($request->input('paths'))
         );
+    }
+
+    /**
+     * Download the requested file.
+     *
+     * @param  \Codrasil\Mediabox\File $file
+     * @return \Illuminate\Http\Response
+     */
+    public function download(File $file)
+    {
+        return $this->mediabox->download($file);
     }
 }

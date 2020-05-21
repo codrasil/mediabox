@@ -322,4 +322,20 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
 
         return '?'.http_build_query(['p' => $this->getCurrentPath()]);
     }
+
+    /**
+     * Retrieve the copy name of the file.
+     * e.g. Copy of file.txt
+     *
+     * @param  string      $prefix
+     * @param  string|null $suffix
+     * @return string
+     */
+    public function getCopyName($prefix = 'Copy of ', $suffix = null)
+    {
+        $name = pathinfo($this->filename(), PATHINFO_FILENAME);
+        $extension = $this->getExtension() ? '.'.$this->getExtension() : null;
+
+        return $prefix.$name.$suffix.$extension;
+    }
 }
