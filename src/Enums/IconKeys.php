@@ -105,6 +105,27 @@ abstract class IconKeys
     const MDI_WOFF = 'mdi mdi-format-font';
     const MDI_WOFF2 = 'mdi mdi-format-font';
 
+    const MDI_FOLDER_HOME = 'mdi mdi-folder-home';
+    const MDI_FOLDER_DESKTOP = 'mdi mdi-folder-home';
+    const MDI_FOLDER_DOCUMENT = 'mdi mdi-folder-outline';
+    const MDI_FOLDER_DOCUMENTS = 'mdi mdi-folder-outline';
+    const MDI_FOLDER_STAR = 'mdi mdi-folder-outline';
+    const MDI_FOLDER_STARRED = 'mdi mdi-folder-star';
+    const MDI_FOLDER_IMAGES = 'mdi mdi-folder-image';
+    const MDI_FOLDER_PICTURES = 'mdi mdi-folder-image';
+    const MDI_FOLDER_PHOTOS = 'mdi mdi-folder-image';
+    const MDI_FOLDER_MUSIC = 'mdi mdi-folder-music';
+    const MDI_FOLDER_AUDIO = 'mdi mdi-folder-music';
+    const MDI_FOLDER_SOUNDS = 'mdi mdi-folder-music';
+    const MDI_FOLDER_SOUND = 'mdi mdi-folder-music';
+    const MDI_FOLDER_DOWNLOADS = 'mdi mdi-folder-download';
+    const MDI_FOLDER_DOWNLOAD = 'mdi mdi-folder-download';
+    const MDI_FOLDER_NETWORK = 'mdi mdi-folder-network';
+    const MDI_FOLDER_CONTACTS = 'mdi mdi-card-account-mail';
+    const MDI_FOLDER_VIDEO = 'mdi mdi-movie';
+    const MDI_FOLDER_VIDEOS = 'mdi mdi-movie';
+    const MDI_FOLDER_MOVIES = 'mdi mdi-movie';
+
     /**
      * Try to guess the icon class for a given extension.
      *
@@ -114,6 +135,10 @@ abstract class IconKeys
     public static function guess($extension)
     {
         $mdi = self::MDI_FILE;
+
+        if (strpos($extension, 'folder_') !== false) {
+            $mdi = self::MDI_FOLDER_DOCUMENTS;
+        }
 
         if (defined('self::MDI_'.strtoupper($extension))) {
             $mdi = constant('self::MDI_'.strtoupper($extension));

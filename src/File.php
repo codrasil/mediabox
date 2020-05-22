@@ -320,10 +320,10 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     public function fragment()
     {
         if (is_file($this->rootPath.$this->getCurrentPath())) {
-            return http_build_query(['f' => $this->getCurrentPath()]);
+            return http_build_query(array_merge($_GET, ['f' => $this->getCurrentPath()]));
         }
 
-        return '?'.http_build_query(['p' => $this->getCurrentPath()]);
+        return '?'.http_build_query(array_merge($_GET, ['p' => $this->getCurrentPath()]));
     }
 
     /**
@@ -362,6 +362,6 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function icon()
     {
-        return IconKeys::guess($this->getExtension());
+        return IconKeys::guess($this->isDir() ? 'folder_'.$this->name() : $this->getExtension());
     }
 }

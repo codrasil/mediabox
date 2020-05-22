@@ -285,6 +285,26 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     }
 
     /**
+     * Retrieve showHiddenFiles value.
+     *
+     * @return boolean
+     */
+    public function getShowHiddenFilesValue()
+    {
+        return $this->showHiddenFiles;
+    }
+
+    /**
+     * Retrieve the root folder's name.
+     *
+     * @return string
+     */
+    public function getRootFolderName()
+    {
+        return ucfirst(basename($this->getRootPath()));
+    }
+
+    /**
      * Before calling the parent Filesystem class' methods,
      * append the root path to the path and target paths.
      *
