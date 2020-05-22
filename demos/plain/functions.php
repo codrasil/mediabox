@@ -11,3 +11,13 @@ function get_p_value()
 {
     return $_GET['p'] ?: null;
 }
+
+function get_dirname($param)
+{
+    return dirname($param);
+}
+
+function __storage($file)
+{
+    return 'storage/'.$file->filename();
+}
