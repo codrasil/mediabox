@@ -33,11 +33,11 @@ const fileMenus = [
 ].concat(folderMenus)
 
 new ContextMenu('table .contextmenu.dir td, table .contextmenu.dir .contextmenu-target', folderMenus, {
-  minimalStyling: true,
+  minimalStyling: false,
   className: 'max-w w-20 rounded overflow-hidden shadow-lg border border-gray-200 bg-white focus:outline-none',
 });
 
 new ContextMenu('table .contextmenu.file td, table .contextmenu.file .contextmenu-target', fileMenus, {
-  minimalStyling: true,
+  minimalStyling: false,
   className: 'max-w w-20 rounded overflow-hidden shadow-lg border border-gray-200 bg-white focus:outline-none',
 });

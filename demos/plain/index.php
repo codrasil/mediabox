@@ -6,6 +6,7 @@
             <div class="flex content-center mb-8">
                 <div class="w-full">
                     <!-- <div class="divide-y divide-gray-400"></div> -->
+                    <div class="divide-y divide-gray-400 height-"></div>
                     <h2 class="inline-block text-2xl tracking-tight font-bold"><?php echo $mediabox->getRootFolderName(); ?></h2>
                     <div class="inline-block ml-4 space-x-2">
                         <!-- ADD MODAL -->
@@ -47,13 +48,13 @@
                 <table style="min-width: max-content;" class="table-auto w-full text-left table-collapse">
                     <thead>
                         <tr class="border-t border-b border-gray-300">
-                            <th class="text-sm text-left font-semibold text-gray-700 p-2 bg-gray-100">File</th>
-                            <th class="text-sm text-left font-semibold text-gray-700 p-2 bg-gray-100 text-right">Size</th>
-                            <th class="text-sm text-left font-semibold text-gray-700 p-2 bg-gray-100">Type</th>
-                            <th class="text-sm text-left font-semibold text-gray-700 p-2 bg-gray-100">Owner</th>
-                            <th class="text-sm text-left font-semibold text-gray-700 p-2 bg-gray-100 text-right">Permission</th>
-                            <th class="text-sm text-left font-semibold text-gray-700 p-2 bg-gray-100 text-right">Last Modified</th>
-                            <th class="text-sm text-center font-semibold text-gray-700 p-2 bg-gray-100">Actions</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100">File</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right">Size</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100">Type</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100">Owner</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right">Permission</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right">Last Modified</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,7 +93,7 @@
                                 <td class="text-gray-900 p-2"><?php echo $file->ownername(); ?></td>
                                 <td class="text-gray-900 p-2 text-right"><?php echo $file->permission(); ?></td>
                                 <td class="text-gray-900 p-2 text-right"><?php echo $file->modified()->format('M d, Y h:i a'); ?></td>
-                                <td class="text-gray-900 p-2 mx-auto text-center">
+                                <td class="text-gray-900 p-2 mx-auto text-right">
                                     <div class="inline-flex space-x-2">
                                         <!-- COPY FORM -->
                                         <form action="ops/copy.php?name=<?php echo $file->filename() ?>" method="post">

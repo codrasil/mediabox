@@ -12,9 +12,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="overflow-x-hidden">
-    <div class="pattern-topograpy h-16 w-screen"></div>
     <div class="flex mb-4 mt-4">
-        <div class="w-4/5 md:w-2/3 mx-auto">
+        <div class="w-4/5 md:w-2/3 mx-auto my-6">
             <h5 class="text-gray-600 font-bold mb-0 text-xs uppercase">Demo</h5>
             <div class="flex space-between">
                 <div class="w-full inline-block mt-3 mb-6">
