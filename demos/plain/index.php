@@ -1,4 +1,4 @@
-<?php require_once __DIR__.'/mediabox.php'; ?>
+    <?php require_once __DIR__.'/mediabox.php'; ?>
 <?php include_once __DIR__.'/partials/head.php'; ?>
 
     <div class="flex mb-4 mt-4 pb-20">
