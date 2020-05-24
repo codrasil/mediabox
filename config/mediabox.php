@@ -1,5 +1,7 @@
 <?php
 
+use Codrasil\Mediabox\Http\Controllers\DownloadStorageFile;
+use Codrasil\Mediabox\Http\Controllers\MediaboxApiController;
 use Codrasil\Mediabox\Http\Controllers\MediaboxController;
 use Codrasil\Mediabox\Http\Controllers\ShowStorageFile;
 
@@ -36,23 +38,37 @@ return [
     | want to use the routes, you may use the route macros in your
     | AppServiceProvider, routes/api.php or routes/web.php file:
     |
-    |  routes  - Codrasil\Mediabox\Http\Routes\MediaboxRoutes::register()
+    |  web  - Codrasil\Mediabox\Http\Routes\MediaboxRoutes::register()
+    |  api  - Codrasil\Mediabox\Http\Routes\MediaboxApiRoutes::register()
     |  storage - Codrasil\Mediabox\Http\Routes\StorageRoutes::register()
     |
     */
 
     'routes' => [
-        'controller' => MediaboxController::class,
-        'middlewares' => ['api', 'bindings'],
-        'name' => 'media',
-        'prefix' => 'api/v1',
-        'register' => true,
-    ],
-    'storage' => [
-        'controller' => ShowStorageFile::class,
-        'middlewares' => ['web'],
-        'name' => 'storage',
-        'register' => true,
+        'web' => [
+            'controller' => MediaboxController::class,
+            'middlewares' => ['web'],
+            'name' => 'media',
+            'prefix' => null,
+            'register' => true,
+        ],
+
+        'api' => [
+            'controller' => MediaboxApiController::class,
+            'middlewares' => ['api', 'bindings'],
+            'name' => 'media',
+            'prefix' => 'api/v1',
+            'register' => true,
+        ],
+
+        'storage' => [
+            'controller' => ShowStorageFile::class,
+            'download' => DownloadStorageFile::class,
+            'middlewares' => ['web'],
+            'name' => 'storage',
+            'prefix' => null,
+            'register' => true,
+        ],
     ],
 
     /*
