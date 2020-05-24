@@ -28,8 +28,10 @@
             <div class="flex">
                 <div class="w-1/2">
                     <p class="text-sm text-gray-700 mb-4">
-                        <a href="<?php echo url_params(['p' => '']) ?>" class="pr-1 text-blue-500 hover:text-blue-800 "><i class="mdi mdi-home">&nbsp;</i></a>
-                        <?php echo $mediabox->getCurrentPath(); ?>
+                        <a href="<?php echo url_params(['p' => '']) ?>" class="pr-1 text-blue-500 hover:text-blue-800"><i class="mdi mdi-home">&nbsp;</i></a>
+                        <?php foreach ($mediabox->breadcrumbs() as $crumb) : ?>
+                          <a href="<?php echo $crumb->url; ?>" class="mx-1 text-blue-500 hover:text-blue-800"><span class="mr-2">/</span><?php echo $crumb->text; ?></a>
+                        <?php endforeach; ?>
                     </p>
                 </div>
                 <div class="w-1/2 text-right">
