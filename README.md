@@ -1,8 +1,9 @@
-<h4 style="text-align: center">Mediabox</h4>
+<p align="center"><img src="./logo.svg" width="300"></p>
 
----
+<br>
 
-### About Mediabox
+## About Mediabox
+
 Mediabox is a PHP implementation of a __web-based file management system__. The library makes it easy to interact with the local disk storage's files and folders.
 
 Features include:
@@ -15,22 +16,35 @@ Features include:
 * Toggling of hidden files
 * Easy syntax to retrieve file meta info like size, permission, last modified date, owner, etc.
 
+Mediabox is also a [Laravel](https://github.com/laravel/laravel) package out-of-the-box with minimal setup.
+
 <br>
 
 ### Demonstration
-_This section is under development._
+Clone or download this repository then run the `demo:plain` composer script:
+```bash
+git clone https://github.com/codrasil/mediabox
+cd mediabox/ && composer install
+composer demo:plain
+```
+The above command will run a built-in PHP server at localhost:8080.
 
+![Screenshot of the demo](./demos/plain/screenshot.png)
+
+You may also run `composer demo:prep` to generate dummy files and folders for the demo.
+
+<br>
+---
 <br>
 
 ### Requirements
 
 * `PHP`: `7+`
 * `illuminate/filesystem`: `^7.11`
+* `symfony/http-foundation`: `^5.0`
 
 <br>
-
 ---
-
 <br>
 
 ### Installation
@@ -40,20 +54,16 @@ The library can be installed via composer:
 composer require codrasil/mediabox
 ```
 
-It can also be used as a <a href="https://github.com/laravel/laravel">Laravel</a> package and can be auto-discovered by Laravel.
+<br>
 
 ##### Publishing Configuration
 If used in a Laravel project, the configuration file can be published via `artisan` command:
 
 ```bash
-php artisan vendor:publish --provider="Codrasil\Mediabox\MediaboxServiceProvider"
+php artisan vendor:publish --tag mediabox
 ```
 
 See <a href="./docs/Laravel.md">docs/Laravel.md</a> for instructions on how to setup in a Laravel project.
-
-<br>
-
----
 
 <br>
 
@@ -66,9 +76,10 @@ use Codrasil\Mediabox\Mediabox;
 
 ...
 
-$baseStoragePath = '/path/to/a/storage/folder';
+$rootStoragePath = '/path/to/a/storage/folder';
+$baseStoragePath = $_GET['p'] ?: $rootStoragePath;
 
-$mediabox = new Mediabox($baseStoragePath);
+$mediabox = new Mediabox($baseStoragePath, $rootStoragePath);
 
 $mediabox->showHiddenFiles($yes = true);
 
@@ -111,32 +122,11 @@ Route::get('media', function (Request $request, Mediabox $mediabox) {
 Note by default, the library will list the files and folders listed in `storage/app/public`.
 To change the path, update the `root_path` value in `config/mediabox.php` file.
 
-<br>
-
 All the necessary setup is taken cared of by the `Codrasil\Mediabox\MediaboxServiceProvider` class.
 
-See `config/mediabox.php` to specify the `root_path`.
-The default value will point to the `storage_path('app/public')`, so make sure to create the folder.
+See `config/mediabox.php` to view all available customization options.
 
-Operations like adding, copying, and deleting of files are registered as an API route by default.
-And displaying and downloading of file is registered as a web route.
-
-```bash
-> php artisan route:list
-+----------+-----------------------------+------------------+--------------------------------------------------------------+--------------+
-| Method   | URI                         | Name             | Action                                                       | Middleware   |
-+----------+-----------------------------+------------------+--------------------------------------------------------------+--------------+
-| GET|HEAD | api/v1/media                | api.media.index  | Codrasil\Mediabox\Http\Controllers\MediaboxController@index  | api,bindings |
-| POST     | api/v1/media/add            | api.media.add    | Codrasil\Mediabox\Http\Controllers\MediaboxController@add    | api,bindings |
-| DELETE   | api/v1/media/delete         | api.media.delete | Codrasil\Mediabox\Http\Controllers\MediaboxController@delete | api,bindings |
-| PATCH    | api/v1/media/move           | api.media.move   | Codrasil\Mediabox\Http\Controllers\MediaboxController@move   | api,bindings |
-| GET|HEAD | api/v1/media/{media}        | api.media.show   | Codrasil\Mediabox\Http\Controllers\MediaboxController@show   | api,bindings |
-| POST     | api/v1/media/{media}/copy   | api.media.copy   | Codrasil\Mediabox\Http\Controllers\MediaboxController@copy   | api,bindings |
-| PATCH    | api/v1/media/{media}/rename | api.media.rename | Codrasil\Mediabox\Http\Controllers\MediaboxController@rename | api,bindings |
-| GET|HEAD | storage/{file}              | storage.show     | Codrasil\Mediabox\Http\Controllers\ShowStorageFile           | web          |
-| GET|HEAD | storage/{file}/download     | storage.download | Codrasil\Mediabox\Http\Controllers\DownloadStorageFile       | web          |
-+----------+-----------------------------+------------------+--------------------------------------------------------------+--------------+
-```
+See also <a href="./docs/Laravel.md">docs/Laravel.md</a> for more information on how to use the library on a Laravel project.
 
 <br>
 
@@ -199,3 +189,16 @@ $mediabox->download('/path/to/a/file.txt');
 Both methods will return an instance of `Symfony\Component\HttpFoundation\BinaryFileResponse`.
 
 <br>
+---
+<br>
+
+### Documentation & Examples
+
+To learn more about the API, see the [docs](./docs) folder.
+
+For more example implementation, checkout [docs/examples](./docs/examples) folder.
+
+<br>
+
+### License
+The library is open-source software licensed under the [MIT license](./LICENSE).
