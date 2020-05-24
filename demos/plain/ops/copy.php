@@ -11,5 +11,5 @@ $attributes = $_POST;
 
 $mediabox->copy($name, $attributes['name']);
 
-header('Location: /'.url_params(['p' => $parent]));
+header('Location: /'.url_params(['p' => ltrim($parent, '.')]));
 exit;

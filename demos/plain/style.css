@@ -13,8 +13,8 @@
 
 .modal-window .modal {
   margin-top: -20rem;
-  transform: scale(0.2);
-  transition: all 0.2s cubic-bezier(.06,.71,.85,.6);
+  transform: scale(0.05);
+  transition: all 0.2s cubic-bezier(.21,.45,.72,.55);
 }
 
 .modal-window:target .modal {
@@ -35,4 +35,8 @@
   height: 40px;
   background: linear-gradient(0deg, rgba(255,255,255,1) 58%, rgba(255,255,255,0) 100%);
   bottom: 0;
+}
+
+.ContextMenu-divider {
+  background-color: rgba(0,0,0,0.05);
 }

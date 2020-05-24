@@ -11,5 +11,5 @@ $attributes = $_POST;
 
 $mediabox->rename($name, $parent.DIRECTORY_SEPARATOR.$attributes['name']);
 
-header('Location: /'.url_params(['p' => $parent]));
+header('Location: /'.url_params(['p' => ltrim($parent, '.'), 'name' => null]));
 exit;

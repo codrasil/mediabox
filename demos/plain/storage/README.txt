@@ -1,1 +1,1 @@
-Hello there.
+Run `composer run demo:prep` to reset and generate empty folders to storage folder.

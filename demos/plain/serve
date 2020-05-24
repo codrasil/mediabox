@@ -1,0 +1,4 @@
+#!/usr/bin/env php
+<?php
+
+passthru('php -S 0.0.0.0:8080 -t ./demos/plain -c ./demos/plain/php.ini');

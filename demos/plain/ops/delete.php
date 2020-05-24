@@ -11,5 +11,5 @@ $attributes = $_POST;
 
 $mediabox->delete($attributes['name']);
 
-header('Location: /'.url_params(['p' => $parent]));
+header('Location: /'.url_params(['name' => null, 'p' => ltrim($parent, '.')]));
 exit;

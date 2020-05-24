@@ -16,8 +16,3 @@ function get_dirname($param)
 {
     return dirname($param);
 }
-
-function __storage($file)
-{
-    return 'storage/'.$file->filename();
-}
