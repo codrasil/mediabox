@@ -48,12 +48,12 @@
                 <table style="min-width: max-content;" class="table-auto w-full text-left table-collapse">
                     <thead>
                         <tr class="border-t border-b border-gray-300">
-                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100">File</th>
-                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right">Size</th>
-                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100">Type</th>
-                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100">Owner</th>
-                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right">Permission</th>
-                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right">Last Modified</th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100"><?php echo get_sort('Name', 'name') ?></th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right"><?php echo get_sort('Size', 'size') ?></th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100"><?php echo get_sort('Type', 'mimetype') ?></th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100"><?php echo get_sort('Owner', 'ownername') ?></th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right"><?php echo get_sort('Permission', 'permission') ?></th>
+                            <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-right"><?php echo get_sort('Last modified', 'modified') ?></th>
                             <th class="text-gray-600 font-semibold mb-0 text-xs uppercase p-2 bg-gray-100 text-center"></th>
                         </tr>
                     </thead>
@@ -67,7 +67,7 @@
                                 </td>
                             </tr>
                         <?php endif; ?>
-                        <?php foreach ($mediabox->all() as $file) : ?>
+                        <?php foreach ($files as $file) : ?>
                             <tr data-fragment="<?php echo $file->fragment() ?>" class="<?php echo $file->type() ?> contextmenu focus:bg-gray-200 hover:bg-gray-200" tabindex="0">
                                 <td class="text-gray-900 p-2 truncate block">
                                     <?php if ($file->isDir()) : ?>
