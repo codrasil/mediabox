@@ -2,6 +2,12 @@
 
 @section('page:content')
 
+  <div>
+    @foreach ($mediabox->breadcrumbs() as $crumb)
+      <a href="{{ $crumb->url }}">{{ $crumb->text }}</a>
+    @endforeach
+  </div>
+
   <div class="flex p-4">
     <div class="overflow-x-auto">
       <table style="min-width: max-content;" class="table-auto w-full text-left table-collapse">
@@ -21,7 +27,9 @@
             <tr>
 
             @if ($file->isDir())
-
+              <td>{{ $file->name() }}</td>
+            @else
+              <td>{{ $file->name() }}</td>
             @endif
             </tr>
           @endforeach

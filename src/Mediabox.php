@@ -183,8 +183,20 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     protected function formatFileMetadata(array $files)
     {
         return array_map(function ($file) {
-            return new File($file, $this->rootPath);
+            return $this->file($file);
         }, $files);
+    }
+
+    /**
+     * Create a new File instance.
+     *
+     * @param  string $file
+     * @param  string $rootPath
+     * @return \Codrasil\Mediabox\File
+     */
+    public function file($file, $rootPath = null)
+    {
+        return new File($file, $rootPath ?? $this->rootPath);
     }
 
     /**
@@ -312,7 +324,22 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
      */
     public function breadcrumbs()
     {
-        # code...
+        $crumbs = Collection::make(explode(
+            DIRECTORY_SEPARATOR, $this->getCurrentPath()
+        ));
+
+        return $crumbs->reject(function ($crumb) {
+            return empty($crumb) || is_null($crumb);
+        })->map(function ($crumb, $i) use ($crumbs) {
+            $parents = array_slice($crumbs->toArray(), 0, $i);
+            $url = implode(DIRECTORY_SEPARATOR, $parents).DIRECTORY_SEPARATOR.$crumb;
+            $file = $this->file($this->rootPath($url));
+
+            return json_decode(json_encode([
+                'text' => $crumb,
+                'url' => $file->fragment(),
+            ]));
+        });
     }
 
     /**
