@@ -20,8 +20,8 @@ return [
     |
     */
 
-    'root_path' => storage_path('app/public'),
-    'base_path' => storage_path('app/public'),
+    'root_path' => storage_path('app/public/media'),
+    'base_path' => storage_path('app/public/media'),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,6 +51,10 @@ return [
             'name' => 'media',
             'prefix' => null,
             'register' => true,
+            'views' => [
+                'index' => 'mediabox::media.index',
+                'show' => 'mediabox::media.show',
+            ],
         ],
 
         'api' => [
@@ -88,5 +92,5 @@ return [
     */
 
     'show_hidden_files' => true,
-    'allow_hidden_files_toggle_via_url' => false,
+    'allow_hidden_files_toggle_via_url' => true,
 ];

@@ -3,7 +3,7 @@
     <form action="../ops/add.php" method="post">
       <div class="bg-white border border-gray-200 shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-8">
-          <div class="text-xl mb-3 block">New Folder</div>
+          <div class="text-xl mb-3 block font-semi-bold">New Folder</div>
           <div class="mb-4">
             <input type="hidden" name="parent" value="<?php echo get_p_value(); ?>">
             <input class="appearance-none shadow-inner block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" name="name" type="text">

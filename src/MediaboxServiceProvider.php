@@ -7,8 +7,13 @@ use Codrasil\Mediabox\File;
 use Codrasil\Mediabox\Http\Routes\MediaboxApiRoutes;
 use Codrasil\Mediabox\Http\Routes\MediaboxRoutes;
 use Codrasil\Mediabox\Http\Routes\StorageRoutes;
+use Codrasil\Mediabox\Http\Views\Composers\FilesComposer;
 use Codrasil\Mediabox\Mediabox;
+use Codrasil\Mediabox\View\Components\Breadcrumbs;
+use Codrasil\Mediabox\View\Components\CopyLink;
+use Codrasil\Mediabox\View\Components\SortLink;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class MediaboxServiceProvider extends ServiceProvider
@@ -35,6 +40,10 @@ class MediaboxServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishConfigurationFile();
+
+        $this->loadViewComponentFiles();
+
+        $this->loadViewComposer();
 
         $this->publishViewFiles();
 
@@ -123,6 +132,30 @@ class MediaboxServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the package view components.
+     *
+     * @return void
+     */
+    protected function loadViewComponentFiles()
+    {
+        $this->loadViewComponentsAs('mediabox', [
+            Breadcrumbs::class,
+            CopyLink::class,
+            SortLink::class,
+        ]);
+    }
+
+    /**
+     * Register a view composer.
+     *
+     * @return void
+     */
+    protected function loadViewComposer()
+    {
+        View::composer(['mediabox::media.index'], FilesComposer::class);
+    }
+
+    /**
      * Register the package routes.
      *
      * @return void
@@ -130,7 +163,9 @@ class MediaboxServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         $this->registerApiMediaboxRoute();
+
         $this->registerMediaboxRoute();
+
         $this->registerStorageRoute();
     }
 

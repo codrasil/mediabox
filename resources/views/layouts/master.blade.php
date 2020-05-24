@@ -1,16 +1,9 @@
 @include('mediabox::partials.head')
 
 @section('page')
-
-  <div class="container mx-auto">
-    <div class="w-full">
-      @yield('page:title')
-    </div>
-    <div class="w-full">
-      @yield('page:content')
-    </div>
-  </div>
-
+  @yield('page:header')
+  @yield('page:content')
+  @yield('page:footer')
 @show
 
 @include('mediabox::partials.footer')

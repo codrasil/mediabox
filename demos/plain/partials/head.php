@@ -11,13 +11,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.2.45/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="overflow-x-hidden">
+<body class="overflow-x-hidden" oncontextmenu="return false">
     <div class="flex mb-4 mt-4">
         <div class="w-4/5 md:w-2/3 mx-auto my-6">
             <h5 class="text-gray-600 font-bold mb-0 text-xs uppercase">Demo</h5>
             <div class="flex space-between">
                 <div class="w-full inline-block mt-3 mb-6">
-                    <!-- <h1 class="mb-8 text-xl tracking-tight font-bold">Mediabox</h1> -->
                     <img width="200" src="../logo.svg" alt="">
                 </div>
                 <div class="w-full inline-block">

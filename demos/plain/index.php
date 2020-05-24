@@ -6,23 +6,26 @@
             <div class="flex content-center mb-8">
                 <div class="w-full">
                     <!-- <div class="divide-y divide-gray-400"></div> -->
-                    <div class="divide-y divide-gray-400 height-"></div>
-                    <h2 class="inline-block text-2xl tracking-tight font-bold"><?php echo $mediabox->getRootFolderName(); ?></h2>
-                    <div class="inline-block ml-4 space-x-2">
-                        <!-- ADD MODAL -->
-                        <?php include 'partials/modal.add.php'; ?>
-                        <a role="button" href="#modal-add" title="New Folder" class="bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow">
-                            <i class="mdi mdi-folder-plus">&nbsp;</i>
-                            New Folder
-                        </a>
-                        <!-- ADD MODAL -->
-                        <!-- UPLOAD MODAL -->
-                        <?php include 'partials/modal.upload.php'; ?>
-                        <a role="button" href="#modal-upload" title="Upload file" class="bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow">
-                            <i class="mdi mdi-upload">&nbsp;</i>
-                            Upload File
-                        </a>
-                        <!-- UPLOAD MODAL -->
+                    <div class="flex justify-between">
+                        <div>
+                            <h2 class="inline-block text-2xl tracking-tight font-semi-bold"><?php echo $mediabox->getRootFolderName(); ?></h2>
+                        </div>
+                        <div class="inline-block ml-4 space-x-2">
+                            <!-- ADD MODAL -->
+                            <?php include 'partials/modal.add.php'; ?>
+                            <a role="button" href="#modal-add" title="New Folder" class="bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow">
+                                <i class="mdi mdi-folder-plus">&nbsp;</i>
+                                New Folder
+                            </a>
+                            <!-- ADD MODAL -->
+                            <!-- UPLOAD MODAL -->
+                            <?php include 'partials/modal.upload.php'; ?>
+                            <a role="button" href="#modal-upload" title="Upload file" class="bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow">
+                                <i class="mdi mdi-upload">&nbsp;</i>
+                                Upload File
+                            </a>
+                            <!-- UPLOAD MODAL -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,6 +43,8 @@
                         <span class="toggle-label">Show hidden files</span>
                         <input onchange="window.location.href = '<?php echo url_params(['h' => !$mediabox->getShowHiddenFilesValue()]) ?>'" class="toggle-checkbox" type="checkbox" <?php echo $mediabox->getShowHiddenFilesValue() ? 'checked' : null ?> name="h" value="1">
                         <div class="toggle-switch"></div>
+                        <input type="checkbox" id="test" value="Apple">
+                        <label for="test">Test</label>
                     </label>
                 </div>
             </div>
@@ -89,7 +94,7 @@
                                         <?php echo $file->size(); ?>
                                     <?php endif; ?>
                                 </td>
-                                <td class="text-gray-900 p-2"><span title="<?php echo $file->mimetype(); ?>" class="truncate w-32 block"><?php echo $file->mimetype(); ?></span></td>
+                                <td class="text-gray-900 p-2 truncate w-32" title="<?php echo $file->mimetype(); ?>"><?php echo $file->mimetype(); ?></td>
                                 <td class="text-gray-900 p-2"><?php echo $file->ownername(); ?></td>
                                 <td class="text-gray-900 p-2 text-right"><?php echo $file->permission(); ?></td>
                                 <td class="text-gray-900 p-2 text-right"><?php echo $file->modified()->format('M d, Y h:i a'); ?></td>

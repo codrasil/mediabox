@@ -35,7 +35,7 @@ class MediaboxController extends Controller
      */
     public function index()
     {
-        return view('mediabox::media.index')->withMediabox($this->mediabox);
+        return view(config('mediabox.routes.web.views.index'))->withMediabox($this->mediabox);
     }
 
     /**
@@ -100,7 +100,7 @@ class MediaboxController extends Controller
      */
     public function show(Request $request, File $file)
     {
-        return view('mediabox::media.show')->withFile($file);
+        return view(config('mediabox.routes.web.views.show'))->withFile($file);
     }
 
     /**

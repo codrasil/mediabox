@@ -3,6 +3,7 @@
 namespace Codrasil\Mediabox;
 
 use ArrayAccess;
+use Carbon\Carbon;
 use Codrasil\Mediabox\Enums\IconKeys;
 use DateTime;
 use JsonSerializable;
@@ -279,7 +280,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function modified()
     {
-        return new DateTime(date('Y-m-d H:i:s', filemtime($this->getRealPath())));
+        return Carbon::parse(date('Y-m-d H:i:s', filemtime($this->getRealPath())));
     }
 
     /**

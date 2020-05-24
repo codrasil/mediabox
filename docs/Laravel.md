@@ -6,7 +6,8 @@
 
 Mediabox is a Laravel package out-of-the-box. With minimal setup, the library can be used as a web-based file manager or as an API to interact with the local disk.
 
-This package only handles the backend side. A frontend UI is intentionally left out in order for developers to have complete control on how to design and integrate it to their own existing projects.
+This package only handles the backend side. The frontend UI is intentionally left bare bones in order for developers to have complete control on how to design and integrate it to their own existing projects. It is ideal to publish the view files then customize it from there.
+See the [Views](#views) section to learn more.
 
 <br>
 
@@ -185,3 +186,7 @@ Finally, if working on a Laravel+VueJS application (not quite SPA; still uses bl
 <br>
 
 #### Views
+
+The package comes with its own minimal blade views and components to display the media files list, and to also preview individual files.
+
+Of course, when working with blade views and components, the route `web` should be enabled. The `storage` route is also recommended to display and download files.
