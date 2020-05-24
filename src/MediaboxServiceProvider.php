@@ -98,11 +98,13 @@ class MediaboxServiceProvider extends ServiceProvider
                 config('mediabox.root_path')
             );
 
-            $mediabox->showHiddenFiles(
-                config('mediabox.allow_hidden_files_toggle_via_url')
-                    ? filter_var($app['request']->get('h') ?: false, FILTER_VALIDATE_BOOLEAN)
-                    : config('mediabox.show_hidden_files', false)
-            );
+            if (config('mediabox.show_hidden_files', false)) {
+                $mediabox->showHiddenFiles(
+                    config('mediabox.allow_hidden_files_toggle_via_url')
+                        ? filter_var($app['request']->get('h') ?: false, FILTER_VALIDATE_BOOLEAN)
+                        : config('mediabox.show_hidden_files', false)
+                );
+            }
 
             return $mediabox;
         });
