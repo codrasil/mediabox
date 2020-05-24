@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="overflow-x-hidden">
-    <div class="pattern-topograpy h-16 w-screen"></div>
     <div class="flex mb-4 mt-4">
-        <div class="w-4/5 md:w-2/3 mx-auto">
-            <h5 class="text-gray-800 mb-0 text-xs uppercase">Demo</h5>
+        <div class="w-4/5 md:w-2/3 mx-auto my-6">
+            <h5 class="text-gray-600 font-bold mb-0 text-xs uppercase">Demo</h5>
             <div class="flex space-between">
-                <div class="w-full inline-block">
-                    <h1 class="mb-8 text-xl tracking-tight font-bold">Mediabox</h1>
+                <div class="w-full inline-block mt-3 mb-6">
+                    <!-- <h1 class="mb-8 text-xl tracking-tight font-bold">Mediabox</h1> -->
+                    <img width="200" src="../logo.svg" alt="">
                 </div>
                 <div class="w-full inline-block">
                     <nav class="flex w-full justify-end text-right">
@@ -26,7 +26,8 @@
                     </nav>
                 </div>
             </div>
-            <p class="text-gray-700 mb-3 text-base">All operations are contained inside <code class="bg-blue-100 border border-blue-200 p-1 rounded relative text-xs">/codrasil/mediabox/demos/plain/storage/<!-- <?php echo $mediabox->getRootPath(); ?> --></code> folder.</p>
+            <p class="text-gray-700 mb-3 text-base">All operations are contained inside <code class="bg-blue-100 border border-blue-200 p-1 rounded relative text-xs"><?php echo $mediabox->getRootPath(); ?></code> folder.</p>
+            <!-- /codrasil/mediabox/demos/plain/storage/ -->
             <p class="text-gray-700 mb-3 text-base">This file showcases the library when used in a plain, no framework PHP project.</p>
         </div>
     </div>
