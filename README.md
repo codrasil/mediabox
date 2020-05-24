@@ -34,8 +34,8 @@ The above command will run a built-in PHP server at localhost:8080.
 You may also run `composer demo:prep` to generate dummy files and folders for the demo.
 
 <br>
+
 ---
-<br>
 
 ### Requirements
 
@@ -43,8 +43,6 @@ You may also run `composer demo:prep` to generate dummy files and folders for th
 * `illuminate/filesystem`: `^7.11`
 * `symfony/http-foundation`: `^5.0`
 
-<br>
----
 <br>
 
 ### Installation
@@ -188,8 +186,6 @@ $mediabox->download('/path/to/a/file.txt');
 
 Both methods will return an instance of `Symfony\Component\HttpFoundation\BinaryFileResponse`.
 
-<br>
----
 <br>
 
 ### Documentation & Examples
