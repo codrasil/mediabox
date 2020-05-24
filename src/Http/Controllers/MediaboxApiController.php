@@ -9,7 +9,7 @@ use Codrasil\Mediabox\Http\Resources\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class MediaboxController extends Controller
+class MediaboxApiController extends Controller
 {
     /**
      * The Mediabox instance.
@@ -35,7 +35,7 @@ class MediaboxController extends Controller
      */
     public function index()
     {
-        return view('mediabox::media.index')->withMediabox($this->mediabox);
+        return MediaResource::collection($this->mediabox->all());
     }
 
     /**
@@ -46,9 +46,9 @@ class MediaboxController extends Controller
      */
     public function add(Request $request)
     {
-        $this->mediabox->add($request->input('name'));
-
-        return back();
+        return response()->json(
+            $this->mediabox->add($request->input('name'), $request->all())->all()
+        );
     }
 
     /**
@@ -59,9 +59,7 @@ class MediaboxController extends Controller
      */
     public function copy(File $file)
     {
-        $this->mediabox->copy($file->getRealpath(), $file->getCopyName());
-
-        return back();
+        return response()->json($this->mediabox->copy($file->getRealpath(), $file->getCopyName()));
     }
 
     /**
@@ -72,9 +70,7 @@ class MediaboxController extends Controller
      */
     public function move(Request $request)
     {
-        $this->mediabox->move($request->input('name'), $request->input('target'));
-
-        return back();
+        return response()->json();
     }
 
     /**
@@ -86,9 +82,7 @@ class MediaboxController extends Controller
      */
     public function rename(Request $request, File $file)
     {
-        $this->mediabox->rename($file->filename(), $request->input('name'));
-
-        return back();
+        return response()->json($this->mediabox->rename($file->filename(), $request->input('name')));
     }
 
     /**
@@ -100,7 +94,7 @@ class MediaboxController extends Controller
      */
     public function show(Request $request, File $file)
     {
-        return view('mediabox::media.show')->withFile($file);
+        return new MediaResource($file);
     }
 
     /**
@@ -111,8 +105,8 @@ class MediaboxController extends Controller
      */
     public function delete(Request $request)
     {
-        $this->mediabox->delete($request->input('name'));
-
-        return back();
+        return response()->json(
+            $this->mediabox->delete($request->input('paths'))
+        );
     }
 }

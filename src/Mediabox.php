@@ -12,7 +12,8 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
         Concerns\CanCopyFiles,
         Concerns\CanDeleteFiles,
         Concerns\CanDownloadFiles,
-        Concerns\CanRenameFiles;
+        Concerns\CanRenameFiles,
+        Concerns\CanUploadFiles;
 
     /**
      * The base path to be instanced.
@@ -302,6 +303,16 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     public function getRootFolderName()
     {
         return ucfirst(basename($this->getRootPath()));
+    }
+
+    /**
+     * Retrieve the breadcrumb array.
+     *
+     * @return array
+     */
+    public function breadcrumbs()
+    {
+        # code...
     }
 
     /**

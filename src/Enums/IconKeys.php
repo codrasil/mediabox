@@ -105,11 +105,12 @@ abstract class IconKeys
     const MDI_WOFF = 'mdi mdi-format-font';
     const MDI_WOFF2 = 'mdi mdi-format-font';
 
+    const MDI_FOLDER = 'mdi mdi-folder';
     const MDI_FOLDER_HOME = 'mdi mdi-folder-home';
     const MDI_FOLDER_DESKTOP = 'mdi mdi-folder-home';
-    const MDI_FOLDER_DOCUMENT = 'mdi mdi-folder-outline';
-    const MDI_FOLDER_DOCUMENTS = 'mdi mdi-folder-outline';
-    const MDI_FOLDER_STAR = 'mdi mdi-folder-outline';
+    const MDI_FOLDER_DOCUMENT = 'mdi mdi-folder-text';
+    const MDI_FOLDER_DOCUMENTS = 'mdi mdi-folder-text';
+    const MDI_FOLDER_STAR = 'mdi mdi-folder-star';
     const MDI_FOLDER_STARRED = 'mdi mdi-folder-star';
     const MDI_FOLDER_IMAGES = 'mdi mdi-folder-image';
     const MDI_FOLDER_PICTURES = 'mdi mdi-folder-image';
@@ -137,7 +138,7 @@ abstract class IconKeys
         $mdi = self::MDI_FILE;
 
         if (strpos($extension, 'folder_') !== false) {
-            $mdi = self::MDI_FOLDER_DOCUMENTS;
+            $mdi = self::MDI_FOLDER;
         }
 
         if (defined('self::MDI_'.strtoupper($extension))) {

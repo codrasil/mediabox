@@ -4,6 +4,7 @@ namespace Codrasil\Mediabox;
 
 use Codrasil\Mediabox\Contracts\MediaboxInterface;
 use Codrasil\Mediabox\File;
+use Codrasil\Mediabox\Http\Routes\MediaboxApiRoutes;
 use Codrasil\Mediabox\Http\Routes\MediaboxRoutes;
 use Codrasil\Mediabox\Http\Routes\StorageRoutes;
 use Codrasil\Mediabox\Mediabox;
@@ -35,6 +36,8 @@ class MediaboxServiceProvider extends ServiceProvider
     {
         $this->publishConfigurationFile();
 
+        $this->publishViewFiles();
+
         $this->bindRouteParameters();
     }
 
@@ -64,6 +67,20 @@ class MediaboxServiceProvider extends ServiceProvider
     protected function registerConfigurationFiles(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/mediabox.php', 'mediabox');
+    }
+
+    /**
+     * Register the package view files.
+     *
+     * @return void
+     */
+    protected function publishViewFiles()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'mediabox');
+
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/mediabox'),
+        ], 'mediabox:views');
     }
 
     /**
@@ -110,8 +127,31 @@ class MediaboxServiceProvider extends ServiceProvider
      */
     protected function registerRoutes()
     {
+        $this->registerApiMediaboxRoute();
         $this->registerMediaboxRoute();
         $this->registerStorageRoute();
+    }
+
+    /**
+     * Register the media routes.
+     *
+     * @return void
+     */
+    protected function registerApiMediaboxRoute()
+    {
+        MediaboxApiRoutes::register();
+
+        if (config('mediabox.routes.api.register')) {
+            $route = Route::prefix(config('mediabox.routes.api.prefix'))->as('api.');
+
+            if (! empty(config('mediabox.routes.api.middlewares', []))) {
+                $route->middleware(config('mediabox.routes.api.middlewares'));
+            }
+
+            $route->group(function () {
+                Route::apiMediaResource(config('mediabox.routes.api.name'), config('mediabox.routes.api.controller'));
+            });
+        }
     }
 
     /**
@@ -123,15 +163,15 @@ class MediaboxServiceProvider extends ServiceProvider
     {
         MediaboxRoutes::register();
 
-        if (config('mediabox.routes.register')) {
-            $route = Route::prefix(config('mediabox.routes.prefix'))->as('api.');
+        if (config('mediabox.routes.web.register')) {
+            $route = Route::prefix(config('mediabox.routes.web.prefix'));
 
-            if (! empty(config('mediabox.routes.middlewares', []))) {
-                $route->middleware(config('mediabox.routes.middlewares'));
+            if (! empty(config('mediabox.routes.web.middlewares', []))) {
+                $route->middleware(config('mediabox.routes.web.middlewares'));
             }
 
             $route->group(function () {
-                Route::mediaResource(config('mediabox.routes.name'), config('mediabox.routes.controller'));
+                Route::mediaResource(config('mediabox.routes.web.name'), config('mediabox.routes.web.controller'));
             });
         }
     }
@@ -145,15 +185,15 @@ class MediaboxServiceProvider extends ServiceProvider
     {
         StorageRoutes::register();
 
-        if (config('mediabox.storage.register')) {
-            $route = Route::prefix(config('mediabox.storage.prefix'));
+        if (config('mediabox.routes.storage.register')) {
+            $route = Route::prefix(config('mediabox.routes.storage.prefix'));
 
-            if (! empty(config('mediabox.storage.middlewares', []))) {
-                $route->middleware(config('mediabox.storage.middlewares'));
+            if (! empty(config('mediabox.routes.storage.middlewares', []))) {
+                $route->middleware(config('mediabox.routes.storage.middlewares'));
             }
 
             $route->group(function () {
-                Route::storageResource(config('mediabox.storage.name'), config('mediabox.storage.controller'));
+                Route::storageResource(config('mediabox.routes.storage.name'), config('mediabox.routes.storage.controller'));
             });
         }
     }

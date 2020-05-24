@@ -6,6 +6,7 @@ use Codrasil\Mediabox\Enums\FileKeys;
 use Codrasil\Mediabox\File;
 use Codrasil\Mediabox\Mediabox;
 use Codrasil\Mediabox\Tests\TestCase;
+use Illuminate\Http\UploadedFile;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -454,5 +455,24 @@ class MediaboxTest extends TestCase
 
         // Assertions
         $this->assertInstanceOf(BinaryFileResponse::class, $actual);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_upload_a_file()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $file = UploadedFile::fake()->create($filename = 'fake.pdf', $sizeInKilobytes = 4);
+
+        // Actions
+        $file = $mediabox->upload($file);
+
+        // Assertions
+        $this->assertFileExists($basePath.DIRECTORY_SEPARATOR.$filename);
     }
 }

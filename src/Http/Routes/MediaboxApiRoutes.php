@@ -5,7 +5,7 @@ namespace Codrasil\Mediabox\Http\Routes;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
-abstract class MediaboxRoutes
+abstract class MediaboxApiRoutes
 {
     /**
      * Register the route macros.
@@ -14,8 +14,8 @@ abstract class MediaboxRoutes
      */
     public static function register(): void
     {
-        if (! Route::hasMacro('mediaResource')) {
-            Route::macro('mediaResource', function ($name, $controller) {
+        if (! Route::hasMacro('apiMediaResource')) {
+            Route::macro('apiMediaResource', function ($name, $controller) {
                 Route::get("$name", "$controller@index")->name("$name.index");
                 Route::get("$name/{media}", "$controller@show")->where('media', '.*')->name("$name.show");
                 Route::patch("$name/{media}/rename", "$controller@rename")->where('media', '.*')->name("$name.rename");

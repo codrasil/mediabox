@@ -279,7 +279,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function modified()
     {
-        return date('Y-m-d H:i:s', filemtime($this->getRealPath()));
+        return new DateTime(date('Y-m-d H:i:s', filemtime($this->getRealPath())));
     }
 
     /**
@@ -363,5 +363,19 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     public function icon()
     {
         return IconKeys::guess($this->isDir() ? 'folder_'.$this->name() : $this->getExtension());
+    }
+
+    /**
+     * Retrieve the number of items inside the folder.
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        if ($this->isFile()) {
+            return;
+        }
+
+        return count(glob($this->getRealpath().DIRECTORY_SEPARATOR.'*'));
     }
 }
