@@ -2,6 +2,7 @@
 
 namespace Codrasil\Mediabox;
 
+use Codrasil\Mediabox\Console\Commands\MediaboxScaffoldCommand;
 use Codrasil\Mediabox\Contracts\MediaboxInterface;
 use Codrasil\Mediabox\File;
 use Codrasil\Mediabox\Http\Routes\MediaboxApiRoutes;
@@ -11,7 +12,13 @@ use Codrasil\Mediabox\Http\Views\Composers\FilesComposer;
 use Codrasil\Mediabox\Mediabox;
 use Codrasil\Mediabox\View\Components\Breadcrumbs;
 use Codrasil\Mediabox\View\Components\CopyLink;
+use Codrasil\Mediabox\View\Components\DeleteLink;
+use Codrasil\Mediabox\View\Components\DownloadLink;
+use Codrasil\Mediabox\View\Components\FileLink;
+use Codrasil\Mediabox\View\Components\PreviewLink;
+use Codrasil\Mediabox\View\Components\RenameLink;
 use Codrasil\Mediabox\View\Components\SortLink;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -43,6 +50,8 @@ class MediaboxServiceProvider extends ServiceProvider
 
         $this->loadViewComponentFiles();
 
+        $this->loadConsoleCommands();
+
         $this->loadViewComposer();
 
         $this->publishViewFiles();
@@ -59,12 +68,24 @@ class MediaboxServiceProvider extends ServiceProvider
     {
         $this->app['router']->bind('media', function ($value) {
             $mediabox = new Mediabox($value, config('mediabox.root_path'));
-            return new File($mediabox->rootPath($value), config('mediabox.root_path'));
+            $file = new File($mediabox->rootPath($value), config('mediabox.root_path'));
+
+            if (! $file->exists()) {
+                return abort(404);
+            }
+
+            return $file;
         });
 
         $this->app['router']->bind('file', function ($value) {
             $mediabox = new Mediabox($value, config('mediabox.root_path'));
-            return new File($mediabox->rootPath($value), config('mediabox.root_path'));
+            $file = new File($mediabox->rootPath($value), config('mediabox.root_path'));
+
+            if (! $file->exists()) {
+                return abort(404);
+            }
+
+            return $file;
         });
     }
 
@@ -107,6 +128,10 @@ class MediaboxServiceProvider extends ServiceProvider
                 config('mediabox.root_path')
             );
 
+            if (config('mediabox.title')) {
+                $mediabox->setRootFolderName(config('mediabox.title'));
+            }
+
             if (config('mediabox.show_hidden_files', false)) {
                 $mediabox->showHiddenFiles(
                     config('mediabox.allow_hidden_files_toggle_via_url')
@@ -138,11 +163,34 @@ class MediaboxServiceProvider extends ServiceProvider
      */
     protected function loadViewComponentFiles()
     {
-        $this->loadViewComponentsAs('mediabox', [
-            Breadcrumbs::class,
-            CopyLink::class,
-            SortLink::class,
-        ]);
+        if (config('mediabox.register_blade_components')) {
+            Blade::include('mediabox::includes.styles', 'mediaboxModalStyles');
+
+            $this->loadViewComponentsAs('mediabox', [
+                Breadcrumbs::class,
+                CopyLink::class,
+                DeleteLink::class,
+                DownloadLink::class,
+                FileLink::class,
+                PreviewLink::class,
+                RenameLink::class,
+                SortLink::class,
+            ]);
+        }
+    }
+
+    /**
+     * Register the console commands.
+     *
+     * @return void
+     */
+    protected function loadConsoleCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MediaboxScaffoldCommand::class,
+            ]);
+        }
     }
 
     /**
@@ -162,11 +210,11 @@ class MediaboxServiceProvider extends ServiceProvider
      */
     protected function registerRoutes()
     {
-        $this->registerApiMediaboxRoute();
+        $this->registerStorageRoute();
 
         $this->registerMediaboxRoute();
 
-        $this->registerStorageRoute();
+        $this->registerApiMediaboxRoute();
     }
 
     /**
