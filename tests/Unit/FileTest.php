@@ -109,4 +109,31 @@ class FileTest extends TestCase
         $this->assertSame($actual[0], './Copy of sample.txt');
         $this->assertSame($actual[1], "./{$date}sample.txt");
     }
+
+    /**
+     * @test
+     * @group codrasil:mediabox
+     * @group mediabox:file
+     */
+    public function it_can_check_if_the_file_is_an_image()
+    {
+        // Arrangements
+        $img = imagecreate(200, 80);
+        $background = imagecolorallocate($img, 0, 0, 255);
+        imagepng($img, $this->path.DIRECTORY_SEPARATOR.($name = 'image.png'));
+
+        $path = $this->path.DIRECTORY_SEPARATOR.$name;
+        $file = new File($path, $this->path);
+
+        $nonImage = $this->path.DIRECTORY_SEPARATOR.'sample.txt';
+        $nonImageFile = new File($nonImage, $this->path);
+
+        // Actions
+        $actual[0] = $file->isImage();
+        $actual[1] = $nonImageFile->isImage();
+
+        // Assertions
+        $this->assertTrue($actual[0]);
+        $this->assertFalse($actual[1]);
+    }
 }

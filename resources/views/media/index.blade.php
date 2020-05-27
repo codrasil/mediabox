@@ -11,12 +11,9 @@
           </div>
         </div>
         <div class="w-full">
-          <div class="flex items-center justify-end">
-            {{-- <x-mediabox-add-folder-link/> --}}
-            {{-- <x-mediabox-upload-link/> --}}
-            <a href="#" class="rounded hover:bg-gray-100 text-gray-600 py-1 px-3 focus:shadow-inner text-sm">New Folder</a>
-            <a href="#" class="rounded hover:bg-gray-100 text-gray-600 py-1 px-3 focus:shadow-inner text-sm">Upload</a>
-            {{-- <a href="{{ url()->getRequest()->fullUrlWithQuery(['p' => null]) }}" class="mr-2 text-2xl tracking-tight font-semi-bold hover:text-blue-800 focus:text-blue-800">{{ $mediabox->getRootFolderName() }}</a> --}}
+          <div class="flex items-center justify-end space-x-2">
+            <x-mediabox-add-folder-link/>
+            <x-mediabox-upload-link/>
           </div>
         </div>
       </div>

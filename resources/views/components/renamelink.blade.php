@@ -11,7 +11,7 @@
         <div class="mb-8">
           <div class="text-xl mb-3 block text-left font-semi-bold"><h4>@lang($attributes['title'] ?? 'Rename')</h4></div>
           <div class="mb-4">
-            <input type="hidden" name="parent" value="{{ $file->filename() }}">
+            <input type="hidden" name="parent" value="{{ $file->dirname() }}">
             <input class="appearance-none shadow-inner block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" name="name" type="text" placeholder="@lang($attributes['placeholder'] ?? 'Rename the file')" value="{{ $file->name() }}">
           </div>
         </div>
