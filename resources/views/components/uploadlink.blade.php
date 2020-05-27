@@ -1,5 +1,5 @@
 <a data-action="add" role="button" href="#modal-upload-file" title="@lang($attributes['text'] ?? 'Upload file')" class="rounded hover:bg-gray-100 text-gray-600 py-1 px-3 focus:shadow-inner text-sm">
-  <i class="{{ $attributes['icon'] ?? 'mdi mdi-folder-plus' }}">&nbsp;</i>
+  <i class="{{ $attributes['icon'] ?? 'mdi mdi-upload-outline' }}">&nbsp;</i>
   @lang($attributes['text'] ?? 'Upload file')
 </a>
 
