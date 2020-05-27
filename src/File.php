@@ -401,13 +401,14 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function isImage()
     {
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
         return @exif_imagetype($this->getRealPath()) !== false;
     }
 
     /**
      * Retrieve the number of items inside the folder.
      *
-     * @return integer
+     * @return mixed
      */
     public function count()
     {

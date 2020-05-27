@@ -24,6 +24,8 @@ class SortLink extends Component
     /**
      * Create a new component instance.
      *
+     * @param  string $label
+     * @param  string $key
      * @return void
      */
     public function __construct($label, $key)

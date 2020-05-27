@@ -47,6 +47,7 @@ class MediaboxScaffoldCommand extends Command
     /**
      * Execute the console command.
      *
+     * @param  \Codrasil\Mediabox\Contracts\MediaboxInterface $mediabox
      * @return mixed
      */
     public function handle(MediaboxInterface $mediabox)

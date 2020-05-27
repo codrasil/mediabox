@@ -282,7 +282,10 @@ class MediaboxServiceProvider extends ServiceProvider
             }
 
             $route->group(function () {
-                Route::storageResource(config('mediabox.routes.storage.name'), config('mediabox.routes.storage.controller'));
+                Route::storageResource(
+                    config('mediabox.routes.storage.name'),
+                    config('mediabox.routes.storage.controller')
+                );
             });
         }
     }

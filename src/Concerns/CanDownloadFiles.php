@@ -26,6 +26,7 @@ trait CanDownloadFiles
      * @param  \Codrasil\Mediabox\File $file
      * @param  array                   $headers
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException Media not found.
      */
     public function fetch(File $file, $headers = [])
     {
@@ -41,6 +42,7 @@ trait CanDownloadFiles
      *
      * @param  \Codrasil\Mediabox\File $file
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException Media not found.
      */
     public function download(File $file)
     {

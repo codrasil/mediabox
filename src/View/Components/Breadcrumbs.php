@@ -17,6 +17,7 @@ class Breadcrumbs extends Component
     /**
      * Create a new component instance.
      *
+     * @param  \Codrasil\Mediabox\Mediabox $mediabox
      * @return void
      */
     public function __construct(Mediabox $mediabox)

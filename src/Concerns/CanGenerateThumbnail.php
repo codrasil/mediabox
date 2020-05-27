@@ -38,7 +38,11 @@ trait CanGenerateThumbnail
         try {
             if ($this->exists() && $this->isImage()) {
                 $imagick = new \Imagick($this->getRealPath());
-                $imagick->thumbnailImage($this->getThumbnailWidth(), $this->getThumbnailHeight(), $bestFit = false, $fill = true);
+                $imagick->thumbnailImage(
+                    $this->getThumbnailWidth(),
+                    $this->getThumbnailHeight(),
+                    $bestFit = false, $fill = true
+                );
                 $hash = base64_encode($imagick->getImageBlob());
 
                 return 'data:image/jpg;base64,'.$hash;
@@ -63,7 +67,8 @@ trait CanGenerateThumbnail
 
     /**
      * Set the thumbnail width.
-     *@param  integer $height
+     *
+     * @param  integer $height
      * @return integer
      */
     public function setThumbnailHeight($height)
