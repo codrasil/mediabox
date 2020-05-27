@@ -46,7 +46,7 @@ class MediaboxController extends Controller
      */
     public function add(Request $request)
     {
-        $this->mediabox->add($request->input('name'));
+        $this->mediabox->add($request->input('name'), $request->all());
 
         return back();
     }
