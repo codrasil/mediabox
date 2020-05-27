@@ -39,7 +39,8 @@ You may also run `composer demo:prep` to generate dummy files and folders for th
 
 ### Requirements
 
-* `PHP`: `7+`
+* `PHP 7+`
+* `php-imagick` (optional; for generating thumbnails)
 * `illuminate/filesystem`: `^7.11`
 * `symfony/http-foundation`: `^5.0`
 
