@@ -28,6 +28,7 @@ class MediaboxScaffoldCommand extends Command
      */
     protected $files = [
         ['index.html', 'no access'],
+        ['.gitignore', "*\n!.gitignore"],
     ];
 
     /**
