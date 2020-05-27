@@ -2,26 +2,28 @@
 
 namespace Codrasil\Mediabox\View\Components;
 
+use Codrasil\Mediabox\File;
 use Codrasil\Mediabox\Mediabox;
 use Illuminate\View\Component;
 
-class Breadcrumbs extends Component
+class RenameLink extends Component
 {
     /**
-     * The Mediabox instance.
+     * The File instance.
      *
-     * @var \Codrasil\Mediabox\Mediabox
+     * @var \Codrasil\Mediabox\File
      */
-    public $mediabox;
+    public $file;
 
     /**
      * Create a new component instance.
      *
+     * @param  \Codrasil\Mediabox\File $file
      * @return void
      */
-    public function __construct(Mediabox $mediabox)
+    public function __construct(File $file)
     {
-        $this->mediabox = $mediabox;
+        $this->file = $file;
     }
 
     /**
@@ -31,8 +33,6 @@ class Breadcrumbs extends Component
      */
     public function render()
     {
-        return view('mediabox::components.breadcrumbs')->withName(
-            config('mediabox.routes.web.name')
-        )->withBreadcrumbs($this->mediabox->breadcrumbs());
+        return view('mediabox::components.renamelink')->withFile($this->file);
     }
 }
