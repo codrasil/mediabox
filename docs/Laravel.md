@@ -24,8 +24,13 @@ Laravel should auto-discover the package once installation was successful.
 
 #### Setup
 
-The first step is to prepare the Laravel project's storage path. By default, the storage path is set to `storage/app/public` and can easily be changed in the package's configuration file.
+The first step is to prepare the Laravel project's storage path. By default, the storage path is set to point to `storage/app/public/media`.
 
+```bash
+mkdir -p storage/app/public/media
+```
+
+This can easily be changed in the package's configuration file.
 To change the storage path, publish the configuration file via artisan:
 
 ```bash
@@ -40,10 +45,16 @@ Update the values of `root_path` and `base_path` if desired. Note that these val
 
 return [
     ...
-    'root_path' => storage_path('app/public/media'),
-    'base_path' => storage_path('app/public/media'),
+    'root_path' => '/new/folder/somewhere/safe/we/hope',
+    'base_path' => '/new/folder/somewhere/safe/we/hope',
     ...
 ];
+```
+
+A console command is also provided to populate the storage path with empty folders:
+
+```bash
+php artisan mediabox:scaffold
 ```
 
 <br>
@@ -190,3 +201,95 @@ Finally, if working on a Laravel+VueJS application (not quite SPA; still uses bl
 The package comes with its own minimal blade views and components to display the media files list, and to also preview individual files.
 
 Of course, when working with blade views and components, the route `web` should be enabled. The `storage` route is also recommended to display and download files.
+
+```php
+// config/mediabox.php
+
+return [
+    ...
+    'routes' => [
+        'web' => [
+            ...
+            'register' => true,
+        ],
+        'storage' => [
+            ...
+            'register' => true,
+        ],
+    ],
+];
+```
+
+Visiting `localhost:8000/media` will render the default page of the list of files and folders:
+
+**Screenshot**
+![Mediabox Page](./assets/laravel.mediabox_page.png)
+
+---
+
+**View Components**
+
+The package also comes preloaded with its own custom Blade Components:
+
+* Breadcrumbs
+  ```blade
+  <x-mediabox-breadcrumbs :home="true|false"/>
+  ```
+* File Link
+  ```blade
+  <x-mediabox-file-link :file="$file"/>
+  ```
+* Operation Buttons
+  ```blade
+  <x-mediabox-copy-link     :file="$file" text="..." icon="..."/>
+  <x-mediabox-rename-link   :file="$file" text="..." icon="..."/>
+  <x-mediabox-delete-link   :file="$file" text="..." icon="..."/>
+  <x-mediabox-download-link :file="$file" text="..." icon="..."/>
+  <!-- Only works with type files (not dir) -->
+  <x-mediabox-preview-link   :file="$file" text="..." icon="..."/>
+  ```
+* Sort Link
+  ```blade
+  <x-mediabox-sort-link ascending-icon="..." descending-icon="..." label="File Name" key="name"/>
+  ```
+
+The components are styled using:
+
+* [TailwindCSS](https://tailwindcss.com/); and
+* [Material Design Icons](https://materialdesignicons.com/) for the iconfonts.
+
+An aliased Blade include file is added to the head tag to style the modals used in the pages.
+
+```blade
+<head>
+  ...
+  @mediaboxModalStyles
+</head>
+```
+
+Make sure to include these dependencies in order for the components to display correctly.
+
+<br>
+
+**Publishing View Files**
+
+It is possible to completely customize the blade components and forego using the above mentioned frontend dependencies. To do so, just publish the files via `artisan` command using the tag _`mediabox:views`_:
+
+```bash
+php artisan vendor:publish --tag mediabox:views
+```
+
+Then simply customize the copied files located at `/resources/views/vendor/mediabox`.
+
+<br>
+
+---
+
+#### Further Reading
+
+Mediabox as a Laravel package offering developers a feature rich, easy-to-customize web-based file management, ready to integrate into their existing projects. The frontend is designed to be minimal and \(ideally\) should be customized to fit the aesthetic of the project it is being integrated to.
+
+Learn more about Laravel usage in [docs](./) folder.
+
+* [How to Use Mediabox in a Laravel API backend](./Laravel/API.md)
+* [How to Use the javascript libary @mediabox/ui in a VueJS project](./VueJS/UI.md)
