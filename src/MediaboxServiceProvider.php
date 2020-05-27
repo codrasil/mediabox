@@ -10,6 +10,7 @@ use Codrasil\Mediabox\Http\Routes\MediaboxRoutes;
 use Codrasil\Mediabox\Http\Routes\StorageRoutes;
 use Codrasil\Mediabox\Http\Views\Composers\FilesComposer;
 use Codrasil\Mediabox\Mediabox;
+use Codrasil\Mediabox\View\Components\AddFolderLink;
 use Codrasil\Mediabox\View\Components\Breadcrumbs;
 use Codrasil\Mediabox\View\Components\CopyLink;
 use Codrasil\Mediabox\View\Components\DeleteLink;
@@ -18,6 +19,7 @@ use Codrasil\Mediabox\View\Components\FileLink;
 use Codrasil\Mediabox\View\Components\PreviewLink;
 use Codrasil\Mediabox\View\Components\RenameLink;
 use Codrasil\Mediabox\View\Components\SortLink;
+use Codrasil\Mediabox\View\Components\UploadLink;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -167,6 +169,7 @@ class MediaboxServiceProvider extends ServiceProvider
             Blade::include('mediabox::includes.styles', 'mediaboxModalStyles');
 
             $this->loadViewComponentsAs('mediabox', [
+                AddFolderLink::class,
                 Breadcrumbs::class,
                 CopyLink::class,
                 DeleteLink::class,
@@ -175,6 +178,7 @@ class MediaboxServiceProvider extends ServiceProvider
                 PreviewLink::class,
                 RenameLink::class,
                 SortLink::class,
+                UploadLink::class,
             ]);
         }
     }

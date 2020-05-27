@@ -52,6 +52,19 @@ class MediaboxController extends Controller
     }
 
     /**
+     * Upload the passed in file to storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request)
+    {
+        $this->mediabox->upload($request->file('file'), $request->input('parent'));
+
+        return back();
+    }
+
+    /**
      * Copy the file to a target destination.
      *
      * @param  \Codrasil\Mediabox\File $file
@@ -86,7 +99,7 @@ class MediaboxController extends Controller
      */
     public function rename(Request $request, File $file)
     {
-        $this->mediabox->rename($file->filename(), $request->input('name'));
+        $this->mediabox->rename($file->filename(), $request->all());
 
         return back();
     }

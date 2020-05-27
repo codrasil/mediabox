@@ -11,6 +11,8 @@ use SplFileInfo;
 
 class File extends SplFileInfo implements ArrayAccess, JsonSerializable
 {
+    use Concerns\CanGenerateThumbnail;
+
     /**
      * The file attributes.
      *
@@ -390,6 +392,16 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
         }
 
         return [];
+    }
+
+    /**
+     * Check if file is an image.
+     *
+     * @return boolean
+     */
+    public function isImage()
+    {
+        return @exif_imagetype($this->getRealPath()) !== false;
     }
 
     /**
