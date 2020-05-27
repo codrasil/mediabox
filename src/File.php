@@ -314,6 +314,18 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Retrieve the directory of the current file.
+     *
+     * @return string
+     */
+    public function dirname()
+    {
+        $dirname = dirname($this->getRealPath());
+
+        return str_replace($this->rootPath, '', $dirname);
+    }
+
+    /**
      * Preview the file in the browser.
      *
      * @return mixed
@@ -364,6 +376,20 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     public function icon()
     {
         return IconKeys::guess($this->isDir() ? 'folder_'.$this->name() : $this->getExtension());
+    }
+
+    /**
+     * Retrieve the exif data of the image file.
+     *
+     * @return array
+     */
+    public function exif()
+    {
+        if ($this->isFile() && exif_imagetype($this->getRealPath())) {
+            return exif_read_data($this->getRealPath(), 'IFD0');
+        }
+
+        return [];
     }
 
     /**

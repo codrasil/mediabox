@@ -100,7 +100,7 @@ class MediaboxController extends Controller
      */
     public function show(Request $request, File $file)
     {
-        return view(config('mediabox.routes.web.views.show'))->withFile($file);
+        return view(config('mediabox.routes.web.views.show'))->withMediabox($this->mediabox)->withFile($file);
     }
 
     /**
