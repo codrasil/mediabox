@@ -5,6 +5,7 @@ namespace Codrasil\Mediabox\Http\Controllers;
 use Codrasil\Mediabox\Contracts\MediaboxInterface;
 use Codrasil\Mediabox\Enums\FileKeys;
 use Codrasil\Mediabox\File;
+use Codrasil\Mediabox\Http\Requests\MediaRequest;
 use Codrasil\Mediabox\Http\Resources\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -41,10 +42,10 @@ class MediaboxApiController extends Controller
     /**
      * Add a file or folder to the media.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Codrasil\Mediabox\Http\Requests\MediaRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function add(Request $request)
+    public function add(MediaRequest $request)
     {
         return response()->json(
             $this->mediabox->add($request->input('name'), $request->all())->all()
