@@ -5,6 +5,8 @@ namespace Codrasil\Mediabox\Http\Controllers;
 use Codrasil\Mediabox\Contracts\MediaboxInterface;
 use Codrasil\Mediabox\Enums\FileKeys;
 use Codrasil\Mediabox\File;
+use Codrasil\Mediabox\Http\Requests\MediaRequest;
+use Codrasil\Mediabox\Http\Requests\UploadRequest;
 use Codrasil\Mediabox\Http\Resources\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -41,10 +43,10 @@ class MediaboxController extends Controller
     /**
      * Add a file or folder to the media.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Codrasil\Mediabox\Http\Requests\MediaRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function add(Request $request)
+    public function add(MediaRequest $request)
     {
         $this->mediabox->add($request->input('name'), $request->all());
 
@@ -54,10 +56,10 @@ class MediaboxController extends Controller
     /**
      * Upload the passed in file to storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Codrasil\Mediabox\Http\Requests\UploadRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function upload(Request $request)
+    public function upload(UploadRequest $request)
     {
         $this->mediabox->upload($request->file('file'), $request->input('parent'));
 
