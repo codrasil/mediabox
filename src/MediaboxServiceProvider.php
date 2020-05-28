@@ -20,6 +20,7 @@ use Codrasil\Mediabox\View\Components\PreviewLink;
 use Codrasil\Mediabox\View\Components\RenameLink;
 use Codrasil\Mediabox\View\Components\SortLink;
 use Codrasil\Mediabox\View\Components\UploadLink;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -73,7 +74,7 @@ class MediaboxServiceProvider extends ServiceProvider
             $file = new File($mediabox->rootPath($value), config('mediabox.root_path'));
 
             if (! $file->exists()) {
-                return abort(404);
+                return abort(Response::HTTP_NOT_FOUND);
             }
 
             return $file;
@@ -84,7 +85,7 @@ class MediaboxServiceProvider extends ServiceProvider
             $file = new File($mediabox->rootPath($value), config('mediabox.root_path'));
 
             if (! $file->exists()) {
-                return abort(404);
+                return abort(Response::HTTP_NOT_FOUND);
             }
 
             return $file;
@@ -126,9 +127,13 @@ class MediaboxServiceProvider extends ServiceProvider
 
         $this->app->singleton(Mediabox::class, function ($app) {
             $mediabox = new Mediabox(
-                $app['request']->get('p') ?? config('mediabox.base_path'),
+                $path = $app['request']->get('p') ?? config('mediabox.base_path'),
                 config('mediabox.root_path')
             );
+
+            if (! $mediabox->exists($mediabox->rootPath($path))) {
+                return abort(Response::HTTP_NOT_FOUND);
+            }
 
             if (config('mediabox.title')) {
                 $mediabox->setRootFolderName(config('mediabox.title'));
