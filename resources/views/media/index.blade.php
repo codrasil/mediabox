@@ -1,23 +1,31 @@
 @extends('mediabox::layouts.master')
 
-@section('page:content')
-  <div class="flex mb-4 mt-4 pb-20">
-    <div class="w-4/5 md:w-2/3 mx-auto">
-      <div class="flex items-center content-center mb-4 mt-4">
-        <div class="w-full">
-          <div class="flex items-center">
-            <a href="{{ url()->getRequest()->fullUrlWithQuery(['p' => null]) }}" class="mr-2 text-2xl tracking-tight font-semi-bold hover:text-blue-800 focus:text-blue-800">{{ $mediabox->getRootFolderName() }}</a>
-            <x-mediabox-breadcrumbs/>
+@section('page:header')
+  <div class="top-0 bg-white w-full">
+    <div class="flex mb-4 mt-4">
+      <div class="w-4/5 md:w-2/3 mx-auto">
+        <div class="flex items-center content-center mb-4 mt-4">
+          <div class="w-full">
+            <div class="flex items-center">
+              <a href="{{ url()->getRequest()->fullUrlWithQuery(['p' => null]) }}" class="mr-2 text-2xl tracking-tight font-semi-bold hover:text-blue-800 focus:text-blue-800">{{ $mediabox->getRootFolderName() }}</a>
+              <x-mediabox-breadcrumbs/>
+            </div>
           </div>
-        </div>
-        <div class="w-full">
-          <div class="flex items-center justify-end space-x-2">
-            <x-mediabox-add-folder-link/>
-            <x-mediabox-upload-link/>
+          <div class="w-full">
+            <div class="flex items-center justify-end">
+              <x-mediabox-add-folder-link/>
+              <x-mediabox-upload-link/>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+@endsection
 
+@section('page:content')
+  <div class="flex mb-4 mt-4 pb-20">
+    <div class="w-4/5 md:w-2/3 mx-auto">
       <div class="flex content-center mb-8">
         <div class="overflow-x-auto w-full">
           <table style="min-width: max-content;" class="table table-auto w-full text-left">

@@ -37,6 +37,6 @@ class UploadRequest extends FormRequest
      */
     protected function getRedirectUrl()
     {
-        return route('media.index', ['#modal-upload-file']);
+        return url()->previous().request()->input('fragment');
     }
 }

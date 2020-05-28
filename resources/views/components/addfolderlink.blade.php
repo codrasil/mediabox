@@ -12,6 +12,7 @@
           <div class="text-xl mb-3 block text-left font-semi-bold"><h4>@lang($attributes['title'] ?? 'New folder')</h4></div>
           <div class="mb-4">
             <input type="hidden" name="parent" value="{{ request()->get('p') }}">
+            <input type="hidden" name="fragment" value="#modal-add-folder">
             <input autocomplete="off" class="appearance-none shadow-inner block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 {{ $errors->has('name') ? 'border-red-500' : null }}" name="name" type="text" placeholder="@lang($attributes['placeholder'] ?? null)" value="{{ old('name') }}">
             @if ($errors->has('name'))
               <p class="text-red-500 mt-2 text-xs italic">{{ $errors->first('name') }}</p>

@@ -35,6 +35,6 @@ class MediaRequest extends FormRequest
      */
     protected function getRedirectUrl()
     {
-        return route('media.index', ['#modal-add-folder']);
+        return url()->previous().request()->input('fragment');
     }
 }
