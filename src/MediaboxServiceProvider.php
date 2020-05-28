@@ -166,7 +166,7 @@ class MediaboxServiceProvider extends ServiceProvider
     protected function loadViewComponentFiles()
     {
         if (config('mediabox.register_blade_components')) {
-            Blade::include('mediabox::includes.styles', 'mediaboxModalStyles');
+            Blade::include('mediabox::includes.styles', 'mediaboxStyles');
 
             $this->loadViewComponentsAs('mediabox', [
                 AddFolderLink::class,
