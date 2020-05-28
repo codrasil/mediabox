@@ -110,8 +110,8 @@ return [
     |   * Codrasil\Mediabox\View\Components\DownloadLink
     |   * Codrasil\Mediabox\View\Components\SortLink
     |
-    | These components are used inside blade files located in
-    | mediabox/views/ folder.
+    | These components are used inside blade files located at
+    | resources/views/vendor/mediabox folder when published.
     |
     */
 
