@@ -1,4 +1,4 @@
-    <?php require_once __DIR__.'/mediabox.php'; ?>
+<?php require_once __DIR__.'/mediabox.php'; ?>
 <?php include_once __DIR__.'/partials/head.php'; ?>
 
     <div class="flex mb-4 mt-4 pb-20">
@@ -39,12 +39,12 @@
                     </p>
                 </div>
                 <div class="w-1/2 text-right">
-                    <label class="toggle">
-                        <span class="toggle-label">Show hidden files</span>
-                        <input onchange="window.location.href = '<?php echo url_params(['h' => !$mediabox->getShowHiddenFilesValue()]) ?>'" class="toggle-checkbox" type="checkbox" <?php echo $mediabox->getShowHiddenFilesValue() ? 'checked' : null ?> name="h" value="1">
-                        <div class="toggle-switch"></div>
-                        <input type="checkbox" id="test" value="Apple">
-                        <label for="test">Test</label>
+                    <label class="flex justify-end items-start">
+                        <div class="bg-white border-2 rounded border-blue-600 w-4 h-4 mt-1 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500">
+                            <input onchange="window.location.href = '<?php echo url_params(['h' => !$mediabox->getShowHiddenFilesValue()]) ?>'" type="checkbox" <?php echo $mediabox->getShowHiddenFilesValue() ? 'checked' : null ?> name="h" value="1" class="opacity-0 absolute">
+                            <svg class="fill-current hidden w-3 h-3 bg-blue-500 text-white pointer-events-none" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+                        </div>
+                        <div class="select-none text-gray-600">Show hidden files</div>
                     </label>
                 </div>
             </div>

@@ -21,7 +21,7 @@ $files = $mediabox->all();
 
 if ($_GET['order'] == 'asc') {
     $files = $files->sortBy($_GET['sort']);
-} elseif ($_GET['order'] == 'desc')  {
+} elseif ($_GET['order'] == 'desc') {
     $files = $files->sortByDesc($_GET['sort']);
 }
 
