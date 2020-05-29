@@ -8,6 +8,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use ZipArchive;
 
 trait CanDownloadFiles
@@ -25,9 +26,14 @@ trait CanDownloadFiles
      * @param  \Codrasil\Mediabox\File $file
      * @param  array                   $headers
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException Media not found.
      */
     public function fetch(File $file, $headers = [])
     {
+        if (! $file->exists()) {
+            throw new NotFoundHttpException('Media not found.');
+        }
+
         return new BinaryFileResponse($file, 200, $headers);
     }
 
@@ -36,9 +42,14 @@ trait CanDownloadFiles
      *
      * @param  \Codrasil\Mediabox\File $file
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException Media not found.
      */
     public function download(File $file)
     {
+        if (! $file->exists()) {
+            throw new NotFoundHttpException('Media not found.');
+        }
+
         if ($file->isDir()) {
             $file = $this->zip($file->getRealPath());
         }

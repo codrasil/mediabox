@@ -37,6 +37,13 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     protected $rootPath;
 
     /**
+     * The folder name to be displayed.
+     *
+     * @var string
+     */
+    protected $rootFolderName;
+
+    /**
      * Toggle hidden file visibility.
      *
      * @var boolean
@@ -57,6 +64,8 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
         $this->basePath = $this->rootPath($basePath);
 
         $this->items = $this->getFilesAndFolders();
+
+        $this->setRootFolderName(ucfirst(basename($this->getRootPath())));
     }
 
     /**
@@ -308,13 +317,24 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     }
 
     /**
+     * Set the rootFolderName property.
+     *
+     * @param  string $name
+     * @return void
+     */
+    public function setRootFolderName($name)
+    {
+        $this->rootFolderName = $name;
+    }
+
+    /**
      * Retrieve the root folder's name.
      *
      * @return string
      */
     public function getRootFolderName()
     {
-        return ucfirst(basename($this->getRootPath()));
+        return $this->rootFolderName;
     }
 
     /**

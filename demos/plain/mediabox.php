@@ -17,6 +17,14 @@ $mediabox = new Mediabox($baseStoragePath, $rootStoragePath);
 
 $mediabox->showHiddenFiles($showHiddenFiles);
 
+$files = $mediabox->all();
+
+if ($_GET['order'] == 'asc') {
+    $files = $files->sortBy($_GET['sort']);
+} elseif ($_GET['order'] == 'desc')  {
+    $files = $files->sortByDesc($_GET['sort']);
+}
+
 if ($f = $_GET['f']) {
     $file = new Mediabox($f, $rootStoragePath);
     $file = new File($file->rootPath($f), $rootStoragePath);

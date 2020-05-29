@@ -22,6 +22,7 @@ abstract class MediaboxRoutes
                 Route::post("$name/{media}/copy", "$controller@copy")->where('media', '.*')->name("$name.copy");
                 Route::patch("$name/{media}/move", "$controller@move")->where('media', '.*')->name("$name.move");
                 Route::delete("$name/delete", "$controller@delete")->name("$name.delete");
+                Route::post("$name/upload", "$controller@upload")->name("$name.upload");
                 Route::post("$name/add", "$controller@add")->name("$name.add");
             });
         }

@@ -20,8 +20,10 @@ return [
     |
     */
 
-    'root_path' => storage_path('app/public'),
-    'base_path' => storage_path('app/public'),
+    'root_path' => storage_path('app/public/media'),
+    'base_path' => storage_path('app/public/media'),
+
+    'title' => 'Media',
 
     /*
     |--------------------------------------------------------------------------
@@ -51,6 +53,10 @@ return [
             'name' => 'media',
             'prefix' => null,
             'register' => true,
+            'views' => [
+                'index' => 'mediabox::media.index',
+                'show' => 'mediabox::media.show',
+            ],
         ],
 
         'api' => [
@@ -88,5 +94,26 @@ return [
     */
 
     'show_hidden_files' => true,
-    'allow_hidden_files_toggle_via_url' => false,
+    'allow_hidden_files_toggle_via_url' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Blade Components Registration
+    |--------------------------------------------------------------------------
+    |
+    | The 'register_blade_components' key will load the package's custom
+    | blade components:
+    |   * Codrasil\Mediabox\View\Components\Breadcrumbs
+    |   * Codrasil\Mediabox\View\Components\CopyLink
+    |   * Codrasil\Mediabox\View\Components\RenameLink
+    |   * Codrasil\Mediabox\View\Components\DeleteLink
+    |   * Codrasil\Mediabox\View\Components\DownloadLink
+    |   * Codrasil\Mediabox\View\Components\SortLink
+    |
+    | These components are used inside blade files located in
+    | mediabox/views/ folder.
+    |
+    */
+
+    'register_blade_components' => true,
 ];

@@ -2,13 +2,27 @@
 
 namespace Codrasil\Mediabox;
 
+use Codrasil\Mediabox\Console\Commands\MediaboxScaffoldCommand;
 use Codrasil\Mediabox\Contracts\MediaboxInterface;
 use Codrasil\Mediabox\File;
 use Codrasil\Mediabox\Http\Routes\MediaboxApiRoutes;
 use Codrasil\Mediabox\Http\Routes\MediaboxRoutes;
 use Codrasil\Mediabox\Http\Routes\StorageRoutes;
+use Codrasil\Mediabox\Http\Views\Composers\FilesComposer;
 use Codrasil\Mediabox\Mediabox;
+use Codrasil\Mediabox\View\Components\AddFolderLink;
+use Codrasil\Mediabox\View\Components\Breadcrumbs;
+use Codrasil\Mediabox\View\Components\CopyLink;
+use Codrasil\Mediabox\View\Components\DeleteLink;
+use Codrasil\Mediabox\View\Components\DownloadLink;
+use Codrasil\Mediabox\View\Components\FileLink;
+use Codrasil\Mediabox\View\Components\PreviewLink;
+use Codrasil\Mediabox\View\Components\RenameLink;
+use Codrasil\Mediabox\View\Components\SortLink;
+use Codrasil\Mediabox\View\Components\UploadLink;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class MediaboxServiceProvider extends ServiceProvider
@@ -36,6 +50,12 @@ class MediaboxServiceProvider extends ServiceProvider
     {
         $this->publishConfigurationFile();
 
+        $this->loadViewComponentFiles();
+
+        $this->loadConsoleCommands();
+
+        $this->loadViewComposer();
+
         $this->publishViewFiles();
 
         $this->bindRouteParameters();
@@ -50,12 +70,24 @@ class MediaboxServiceProvider extends ServiceProvider
     {
         $this->app['router']->bind('media', function ($value) {
             $mediabox = new Mediabox($value, config('mediabox.root_path'));
-            return new File($mediabox->rootPath($value), config('mediabox.root_path'));
+            $file = new File($mediabox->rootPath($value), config('mediabox.root_path'));
+
+            if (! $file->exists()) {
+                return abort(404);
+            }
+
+            return $file;
         });
 
         $this->app['router']->bind('file', function ($value) {
             $mediabox = new Mediabox($value, config('mediabox.root_path'));
-            return new File($mediabox->rootPath($value), config('mediabox.root_path'));
+            $file = new File($mediabox->rootPath($value), config('mediabox.root_path'));
+
+            if (! $file->exists()) {
+                return abort(404);
+            }
+
+            return $file;
         });
     }
 
@@ -98,11 +130,17 @@ class MediaboxServiceProvider extends ServiceProvider
                 config('mediabox.root_path')
             );
 
-            $mediabox->showHiddenFiles(
-                config('mediabox.allow_hidden_files_toggle_via_url')
-                    ? filter_var($app['request']->get('h') ?: false, FILTER_VALIDATE_BOOLEAN)
-                    : config('mediabox.show_hidden_files', false)
-            );
+            if (config('mediabox.title')) {
+                $mediabox->setRootFolderName(config('mediabox.title'));
+            }
+
+            if (config('mediabox.show_hidden_files', false)) {
+                $mediabox->showHiddenFiles(
+                    config('mediabox.allow_hidden_files_toggle_via_url')
+                        ? filter_var($app['request']->get('h') ?: false, FILTER_VALIDATE_BOOLEAN)
+                        : config('mediabox.show_hidden_files', false)
+                );
+            }
 
             return $mediabox;
         });
@@ -121,15 +159,66 @@ class MediaboxServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the package view components.
+     *
+     * @return void
+     */
+    protected function loadViewComponentFiles()
+    {
+        if (config('mediabox.register_blade_components')) {
+            Blade::include('mediabox::includes.styles', 'mediaboxStyles');
+
+            $this->loadViewComponentsAs('mediabox', [
+                AddFolderLink::class,
+                Breadcrumbs::class,
+                CopyLink::class,
+                DeleteLink::class,
+                DownloadLink::class,
+                FileLink::class,
+                PreviewLink::class,
+                RenameLink::class,
+                SortLink::class,
+                UploadLink::class,
+            ]);
+        }
+    }
+
+    /**
+     * Register the console commands.
+     *
+     * @return void
+     */
+    protected function loadConsoleCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MediaboxScaffoldCommand::class,
+            ]);
+        }
+    }
+
+    /**
+     * Register a view composer.
+     *
+     * @return void
+     */
+    protected function loadViewComposer()
+    {
+        View::composer(['mediabox::media.index'], FilesComposer::class);
+    }
+
+    /**
      * Register the package routes.
      *
      * @return void
      */
     protected function registerRoutes()
     {
-        $this->registerApiMediaboxRoute();
-        $this->registerMediaboxRoute();
         $this->registerStorageRoute();
+
+        $this->registerMediaboxRoute();
+
+        $this->registerApiMediaboxRoute();
     }
 
     /**
@@ -193,7 +282,10 @@ class MediaboxServiceProvider extends ServiceProvider
             }
 
             $route->group(function () {
-                Route::storageResource(config('mediabox.routes.storage.name'), config('mediabox.routes.storage.controller'));
+                Route::storageResource(
+                    config('mediabox.routes.storage.name'),
+                    config('mediabox.routes.storage.controller')
+                );
             });
         }
     }

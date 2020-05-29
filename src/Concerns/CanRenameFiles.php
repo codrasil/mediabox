@@ -19,13 +19,15 @@ trait CanRenameFiles
     /**
      * Move a file to a new location.
      *
-     * @param  string $path
-     * @param  string $target
+     * @param  string       $path
+     * @param  string|array $target
      * @return boolean
      */
     public function rename($path, $target)
     {
-        // $target = $this->rootPath($path).DIRECTORY_SEPARATOR.$target;
+        if (is_array($target)) {
+            $target = ltrim(($target['parent'] ?? null).DIRECTORY_SEPARATOR.$target['name'], DIRECTORY_SEPARATOR);
+        }
 
         return parent::move($this->rootPath($path), $this->rootPath($target));
     }

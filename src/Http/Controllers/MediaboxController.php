@@ -35,7 +35,7 @@ class MediaboxController extends Controller
      */
     public function index()
     {
-        return view('mediabox::media.index')->withMediabox($this->mediabox);
+        return view(config('mediabox.routes.web.views.index'))->withMediabox($this->mediabox);
     }
 
     /**
@@ -46,7 +46,20 @@ class MediaboxController extends Controller
      */
     public function add(Request $request)
     {
-        $this->mediabox->add($request->input('name'));
+        $this->mediabox->add($request->input('name'), $request->all());
+
+        return back();
+    }
+
+    /**
+     * Upload the passed in file to storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request)
+    {
+        $this->mediabox->upload($request->file('file'), $request->input('parent'));
 
         return back();
     }
@@ -86,7 +99,7 @@ class MediaboxController extends Controller
      */
     public function rename(Request $request, File $file)
     {
-        $this->mediabox->rename($file->filename(), $request->input('name'));
+        $this->mediabox->rename($file->filename(), $request->all());
 
         return back();
     }
@@ -100,7 +113,7 @@ class MediaboxController extends Controller
      */
     public function show(Request $request, File $file)
     {
-        return view('mediabox::media.show')->withFile($file);
+        return view(config('mediabox.routes.web.views.show'))->withMediabox($this->mediabox)->withFile($file);
     }
 
     /**

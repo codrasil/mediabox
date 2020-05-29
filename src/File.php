@@ -3,6 +3,7 @@
 namespace Codrasil\Mediabox;
 
 use ArrayAccess;
+use Carbon\Carbon;
 use Codrasil\Mediabox\Enums\IconKeys;
 use DateTime;
 use JsonSerializable;
@@ -10,6 +11,8 @@ use SplFileInfo;
 
 class File extends SplFileInfo implements ArrayAccess, JsonSerializable
 {
+    use Concerns\CanGenerateThumbnail;
+
     /**
      * The file attributes.
      *
@@ -279,7 +282,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function modified()
     {
-        return new DateTime(date('Y-m-d H:i:s', filemtime($this->getRealPath())));
+        return Carbon::parse(date('Y-m-d H:i:s', filemtime($this->getRealPath())));
     }
 
     /**
@@ -310,6 +313,18 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     public function ownername()
     {
         return $this->attributes[Enums\FileKeys::OWNER]['name'] ?? null;
+    }
+
+    /**
+     * Retrieve the directory of the current file.
+     *
+     * @return string
+     */
+    public function dirname()
+    {
+        $dirname = dirname($this->getRealPath());
+
+        return str_replace($this->rootPath, '', $dirname);
     }
 
     /**
@@ -366,9 +381,34 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Retrieve the exif data of the image file.
+     *
+     * @return array
+     */
+    public function exif()
+    {
+        if ($this->isFile() && exif_imagetype($this->getRealPath())) {
+            return exif_read_data($this->getRealPath(), 'IFD0');
+        }
+
+        return [];
+    }
+
+    /**
+     * Check if file is an image.
+     *
+     * @return boolean
+     */
+    public function isImage()
+    {
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+        return @exif_imagetype($this->getRealPath()) !== false;
+    }
+
+    /**
      * Retrieve the number of items inside the folder.
      *
-     * @return integer
+     * @return mixed
      */
     public function count()
     {
