@@ -118,7 +118,7 @@ Route::get('media', function (Request $request, Mediabox $mediabox) {
 @endforeach
 ```
 
-Note by default, the library will list the files and folders listed in `storage/app/public`.
+Note by default, the library will list the files and folders listed in `storage/app/public/media`.
 To change the path, update the `root_path` value in `config/mediabox.php` file.
 
 All the necessary setup is taken cared of by the `Codrasil\Mediabox\MediaboxServiceProvider` class.
