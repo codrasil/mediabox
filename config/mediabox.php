@@ -35,13 +35,13 @@ return [
     | of file. The 'storage' key holds the displaying and downloading of the
     | files to the browser.
     |
-    | The 'register' key for both 'routes' and 'storage' determines whether to
+    | The 'register' key for 'web', 'api' and 'storage' determines whether to
     | install these routes or not. If you've set these values to false but still
     | want to use the routes, you may use the route macros in your
     | AppServiceProvider, routes/api.php or routes/web.php file:
     |
-    |  web  - Codrasil\Mediabox\Http\Routes\MediaboxRoutes::register()
-    |  api  - Codrasil\Mediabox\Http\Routes\MediaboxApiRoutes::register()
+    |  web     - Codrasil\Mediabox\Http\Routes\MediaboxRoutes::register()
+    |  api     - Codrasil\Mediabox\Http\Routes\MediaboxApiRoutes::register()
     |  storage - Codrasil\Mediabox\Http\Routes\StorageRoutes::register()
     |
     */
@@ -101,14 +101,19 @@ return [
     | Blade Components Registration
     |--------------------------------------------------------------------------
     |
-    | The 'register_blade_components' key will load the package's custom
-    | blade components:
+    | The 'register_blade_components' key will load the package's
+    | custom blade components:
+    |
+    |   * Codrasil\Mediabox\View\Components\AddFolderLink
     |   * Codrasil\Mediabox\View\Components\Breadcrumbs
     |   * Codrasil\Mediabox\View\Components\CopyLink
-    |   * Codrasil\Mediabox\View\Components\RenameLink
     |   * Codrasil\Mediabox\View\Components\DeleteLink
     |   * Codrasil\Mediabox\View\Components\DownloadLink
+    |   * Codrasil\Mediabox\View\Components\FileLink
+    |   * Codrasil\Mediabox\View\Components\PreviewLink
+    |   * Codrasil\Mediabox\View\Components\RenameLink
     |   * Codrasil\Mediabox\View\Components\SortLink
+    |   * Codrasil\Mediabox\View\Components\UploadLink
     |
     | These components are used inside blade files located at
     | resources/views/vendor/mediabox folder when published.
