@@ -15,7 +15,10 @@ class MediaResource extends JsonResource
     public function toArray($request)
     {
         $attributes = array_merge(parent::toArray($request), [
-            'url' => $this->isDir() ? false : route(config('mediabox.storage.name').'.show', $this->filename()),
+            'url' => $this->isDir() ? false : route(
+                config('mediabox.routes.storage.name').'.show',
+                $this->filename()
+            ),
         ]);
 
         if ($request->has('columns')) {
