@@ -62,7 +62,7 @@ If used in a Laravel project, the configuration file can be published via `artis
 php artisan vendor:publish --tag mediabox
 ```
 
-See [docs/Laravel](./docs/Laravel/00. Getting Started.md) for instructions on how to setup in a Laravel project.
+See [docs/Laravel](./docs/Laravel/00.%20Getting%20Started.md) for instructions on how to setup in a Laravel project.
 
 <br>
 
@@ -125,7 +125,7 @@ All the necessary setup is taken cared of by the `Codrasil\Mediabox\MediaboxServ
 
 See `config/mediabox.php` to view all available customization options.
 
-See also [docs/Laravel](./docs/Laravel/00. Getting Started.md) for more information on how to use the library on a Laravel project.
+See also [docs/Laravel](./docs/Laravel/00.%20Getting%20Started.md) for more information on how to use the library on a Laravel project.
 
 <br>
 
@@ -195,9 +195,9 @@ To learn more about the API, see the [docs](./docs) folder.
 
 For more example implementation, checkout [docs/examples](./docs/examples) folder.
 
-For instructions on how to use in a Laravel project, see [docs/Laravel](./docs/Laravel/00. Getting Started.md).
+For instructions on how to use in a Laravel project, see [docs/Laravel](./docs/Laravel/00.%20Getting%20Started.md).
 
-For instructions on how to use in a Laravel + VueJS project, see [docs/VueJS](./docs/VueJS/00. Getting Started.md).
+For instructions on how to use in a Laravel + VueJS project, see [docs/VueJS](./docs/VueJS/00.%20Getting%20Started.md).
 
 <br>
 
