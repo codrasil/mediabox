@@ -2,6 +2,15 @@
 
 <br>
 
+<p align="center">
+  <a href="//packagist.org/packages/codrasil/mediabox"><img src="https://poser.pugx.org/codrasil/mediabox/v" alt="Latest Stable Version"></a>
+  <a href="//packagist.org/packages/codrasil/mediabox"><img src="https://poser.pugx.org/codrasil/mediabox/downloads" alt="Total Downloads"></a>
+  <a href="//packagist.org/packages/codrasil/mediabox"><img src="https://poser.pugx.org/codrasil/mediabox/v/unstable" alt="Latest Unstable Version"></a>
+  <a href="//packagist.org/packages/codrasil/mediabox"><img src="https://poser.pugx.org/codrasil/mediabox/license" alt="License"></a>
+</p>
+
+<br>
+
 ## About Mediabox
 
 Mediabox is a PHP implementation of a __web-based file management system__. The library makes it easy to interact with the local disk storage's files and folders.
