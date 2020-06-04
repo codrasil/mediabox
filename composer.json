@@ -1,6 +1,6 @@
 {
   "name": "codrasil/mediabox",
-  "description": "A File Manager for PHP",
+  "description": "A PHP implementation of a web-based file management system",
   "type": "library",
   "require-dev": {
     "phpunit/phpunit": "^9.1",
