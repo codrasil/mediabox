@@ -50,6 +50,7 @@ You may also run `composer demo:prep` to generate dummy files and folders for th
 
 * `PHP 7+`
 * `php-imagick` (optional; for generating thumbnails)
+* `illuminate/cache`: `^7.15`
 * `illuminate/filesystem`: `^7.11`
 * `symfony/http-foundation`: `^5.0`
 
