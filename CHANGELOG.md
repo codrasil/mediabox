@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <br>
 
-## [1.0.1](https://github.com/codrasil/mediabox/releases/tag/v1.0.0) - 2020-06-04
+## [1.0.0](https://github.com/codrasil/mediabox/releases/tag/v1.0.0) - 2020-06-04
 ### Added
 - Add Mediabox class file
 - Add File class file
