@@ -185,8 +185,10 @@ $mediabox->delete(['Copy of Reminders', 'Copy of groceries.todo']);
 <br>
 
 #### Displaying & Downloading
-To display a file on a browser, use the `fetch` method.
+To display a file on a browser, use the `stream` or `fetch` method.
 ```php
+$mediabox->stream('/path/to/a/file.txt');
+// or
 $mediabox->fetch('/path/to/a/file.txt');
 ```
 
