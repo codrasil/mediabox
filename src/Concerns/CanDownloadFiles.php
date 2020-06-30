@@ -38,6 +38,18 @@ trait CanDownloadFiles
     }
 
     /**
+     * Alias method for fetch.
+     *
+     * @param  \Codrasil\Mediabox\File $file
+     * @param  array                   $headers
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function stream(File $file, $headers = [])
+    {
+        return $this->fetch($file, $headers);
+    }
+
+    /**
      * Download the given file.
      *
      * @param  \Codrasil\Mediabox\File $file
