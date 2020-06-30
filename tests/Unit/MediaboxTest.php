@@ -442,6 +442,26 @@ class MediaboxTest extends TestCase
      * @group  mediabox:unit
      * @return void
      */
+    public function it_can_stream_the_url_of_the_file()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFile($file = 'anotherFile.txt', 'hello world.');
+
+        // Actions
+        $file = $mediabox->find($file);
+        $actual = $mediabox->stream($file);
+
+        // Assertions
+        $this->assertInstanceOf(BinaryFileResponse::class, $actual);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
     public function it_can_download_the_file()
     {
         // Arrangements
