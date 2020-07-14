@@ -188,7 +188,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
             Enums\FileKeys::MODIFIED => $this->modified(),
             Enums\FileKeys::FILEPERMISSIONS => $fileperms = fileperms($pathname),
             Enums\FileKeys::PERMISSION => substr(sprintf("%o", $fileperms), -4),
-            Enums\FileKeys::OWNER => posix_getpwuid(fileowner($pathname)),
+            Enums\FileKeys::OWNER => $this->owner(),
             Enums\FileKeys::FRAGMENT => $this->fragment(),
             Enums\FileKeys::MIMETYPE => $this->mimetype(),
             Enums\FileKeys::ICON => $this->icon(),
@@ -295,6 +295,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
         return $this->attributes[Enums\FileKeys::PERMISSION];
     }
 
+
     /**
      * Retrieve the file owner.
      *
@@ -302,7 +303,24 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function owner()
     {
-        return $this->attributes[Enums\FileKeys::OWNER];
+        $owner = null;
+        $pathname = $this->getPathname();
+
+        try {
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && class_exists('COM')) {
+                $su = new \COM('ADsSecurityUtility');
+                $securityInfo = $su->GetSecurityDescriptor($pathname, 1, 1);
+                $owner = $securityInfo->owner;
+            }
+
+            if (function_exists('posix_getpwuid')) {
+                $owner = posix_getpwuid(fileowner($pathname));
+            }
+        } catch (\Exception $e) {
+            unset($e);
+        }
+
+        return $owner;
     }
 
     /**
@@ -312,7 +330,9 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function ownername()
     {
-        return $this->attributes[Enums\FileKeys::OWNER]['name'] ?? null;
+        return $this->attributes[Enums\FileKeys::OWNER]['name']
+            ?? $this->attributes[Enums\FileKeys::OWNER]
+            ?? null;
     }
 
     /**
