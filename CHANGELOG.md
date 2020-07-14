@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `illuminate/cache` as requirement package
 - Add method "stream", alias for the "fetch" method
 ### Changed
-- Remove file's name to the icon class
+- Removed file's name to the icon class
+- Changed the filename method's trimmed trailing slash from `/` to `DIRECTORY_SEPARATOR`
 
 <br>
 
