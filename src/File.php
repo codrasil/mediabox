@@ -242,7 +242,7 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
      */
     public function filename()
     {
-        return ltrim($this->getCurrentPath(), '/');
+        return ltrim($this->getCurrentPath(), DIRECTORY_SEPARATOR);
     }
 
     /**
