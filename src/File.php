@@ -185,13 +185,19 @@ class File extends SplFileInfo implements ArrayAccess, JsonSerializable
             Enums\FileKeys::TYPE => $this->getType(),
             Enums\FileKeys::FILESIZE => $filesize = $this->filesize(),
             Enums\FileKeys::SIZE => $this->size(),
-            Enums\FileKeys::MODIFIED => $this->modified(),
+            Enums\FileKeys::MODIFIED_AT => $this->modified(),
+            Enums\FileKeys::MODIFIED => $this->modified()->diffForHumans(),
+            Enums\FileKeys::UPDATED_AT => $this->modified()->format('Y-m-d H:i:s'),
             Enums\FileKeys::FILEPERMISSIONS => $fileperms = fileperms($pathname),
             Enums\FileKeys::PERMISSION => substr(sprintf("%o", $fileperms), -4),
             Enums\FileKeys::OWNER => posix_getpwuid(fileowner($pathname)),
             Enums\FileKeys::FRAGMENT => $this->fragment(),
             Enums\FileKeys::MIMETYPE => $this->mimetype(),
             Enums\FileKeys::ICON => $this->icon(),
+            Enums\FileKeys::COUNT => $this->count(),
+            Enums\FileKeys::DIRNAME => $this->dirname(),
+            Enums\FileKeys::IS_FILE => $this->getType() == Enums\FileKeys::FILE_KEY,
+            Enums\FileKeys::IS_DIR => $this->getType() == Enums\FileKeys::DIR_KEY,
         ]);
     }
 
