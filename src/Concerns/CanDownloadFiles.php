@@ -100,10 +100,11 @@ trait CanDownloadFiles
     protected function zipFile($directory, $subDirectory = null)
     {
         $directory = rtrim($directory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        $basename = basename($directory);
         $files = scandir($directory.$subDirectory);
 
         if (count($files) <= 2) {
-            $this->zip->addFromString('__EMPTY__', '');
+            $this->zip->addFromString($basename.DIRECTORY_SEPARATOR.'__EMPTY__', '');
         }
 
         foreach ($files as $file) {
@@ -111,15 +112,42 @@ trait CanDownloadFiles
                 continue;
             }
 
-            if (is_file($directory.$subDirectory.$file)) {
-                $this->zip->addFile($directory.$subDirectory.$file, $subDirectory.$file);
-            } elseif (is_dir($directory.$subDirectory.$file)) {
+            if (is_dir($directory.$subDirectory.$file)) {
                 $this->zip->addEmptyDir($subDirectory.$file);
                 $this->zipFile(
                     $directory,
                     $subDirectory.$file.DIRECTORY_SEPARATOR
                 );
+            } elseif (is_file($directory.$subDirectory.$file)) {
+                $this->zip->addFile($directory.$subDirectory.$file, $subDirectory.$file);
             }
         }
+    }
+
+    /**
+     * Zip multiple files.
+     *
+     * @param  array  $paths
+     * @param  string $zipFileName
+     * @return mixed
+     */
+    public function zipMultiple($paths, $zipFileName = null)
+    {
+        $zipFileName = $this->rootPath(($zipFileName ?? strtolower($this->getRootFolderName())).'.zip');
+        $this->zip = new ZipArchive;
+        $this->zip->open($zipFileName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
+
+        foreach ((array) $paths as $path) {
+            if (is_dir($this->rootPath($path))) {
+                $dir = dirname($this->rootPath($path));
+                $this->zipFile($dir, dirname($path).DIRECTORY_SEPARATOR);
+            } else if (is_file($this->rootPath($path))) {
+                $this->zip->addFile($this->rootPath($path), $path);
+            }
+        }
+
+        $this->zip->close();
+
+        return new File($zipFileName, $this->getRootPath());
     }
 }

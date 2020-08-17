@@ -495,4 +495,26 @@ class MediaboxTest extends TestCase
         // Assertions
         $this->assertFileExists($basePath.DIRECTORY_SEPARATOR.$filename);
     }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_zip_multiple_files()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($files[] = 'MyFolder');
+        $mediabox->addFile('MyFolder/myfolder.txt', 'inside.');
+        $mediabox->addFile($files[] = 'anotherFile.txt', 'hello world.');
+        $mediabox->addFile($files[] = 'anotherFile1.txt', 'hello world.');
+
+        // Actions
+        $actual = $mediabox->zipMultiple($files);
+
+        // Assertions
+        $this->assertInstanceOf(File::class, $actual);
+    }
 }
