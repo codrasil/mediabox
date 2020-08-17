@@ -7,13 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add CHANGELOG.md file to track changes
-- Add `illuminate/cache` as requirement package
-- Add method "stream", alias for the "fetch" method
+- Add download method to MediaboxApiController
 - Add upload method to MediaboxApiController
 - Add keys to FileKeys enum class file to check file type, modification dates, and directory names
 - Add keys to check count, file type, and dates to File class when returned as array or json
 - Add method to retrieve current folder info in Mediabox class
+- Add CHANGELOG.md file to track changes
+- Add `illuminate/cache` as requirement package
+- Add method "stream", alias for the "fetch" method
 ### Changed
 - Remove file's name to the icon class
 - Changed the filename method's trimmed trailing slash from `/` to `DIRECTORY_SEPARATOR`
