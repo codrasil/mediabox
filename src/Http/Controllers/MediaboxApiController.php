@@ -124,4 +124,16 @@ class MediaboxApiController extends Controller
 
         return back();
     }
+
+    /**
+     * Download the specified file.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Codrasil\Mediabox\File  $file
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request, File $file)
+    {
+        return $this->mediabox->download($file);
+    }
 }
