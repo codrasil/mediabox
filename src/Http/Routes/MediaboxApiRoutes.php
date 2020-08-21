@@ -25,6 +25,7 @@ abstract class MediaboxApiRoutes
                 Route::delete("$name/delete", "$controller@delete")->name("$name.delete");
                 Route::post("$name/upload", "$controller@upload")->name("$name.upload");
                 Route::post("$name/add", "$controller@add")->name("$name.add");
+                Route::post("$name/zip", "$controller@zip")->name("$name.zip");
             });
         }
     }

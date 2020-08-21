@@ -37,7 +37,12 @@ class MediaboxApiController extends Controller
      */
     public function index()
     {
-        return MediaResource::collection($this->mediabox->all());
+        return response()->json([
+            'title' => $this->mediabox->getRootFolderName(),
+            'breadcrumbs' => $this->mediabox->breadcrumbs()->values(),
+            'info' => $this->mediabox->getCurrentFolderInfo(),
+            'data' => MediaResource::collection($this->mediabox->all()),
+        ]);
     }
 
     /**
@@ -135,5 +140,18 @@ class MediaboxApiController extends Controller
     public function download(Request $request, File $file)
     {
         return $this->mediabox->download($file);
+    }
+
+    /**
+     * Zip the given files.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function zip(Request $request)
+    {
+        return response()->json(
+            $this->mediabox->zip($request->input('files'), $request->input('parent'))
+        );
     }
 }
