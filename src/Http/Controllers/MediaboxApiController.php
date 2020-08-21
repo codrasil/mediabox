@@ -6,6 +6,7 @@ use Codrasil\Mediabox\Contracts\MediaboxInterface;
 use Codrasil\Mediabox\Enums\FileKeys;
 use Codrasil\Mediabox\File;
 use Codrasil\Mediabox\Http\Requests\MediaRequest;
+use Codrasil\Mediabox\Http\Requests\UploadRequest;
 use Codrasil\Mediabox\Http\Resources\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -36,7 +37,12 @@ class MediaboxApiController extends Controller
      */
     public function index()
     {
-        return MediaResource::collection($this->mediabox->all());
+        return response()->json([
+            'title' => $this->mediabox->getRootFolderName(),
+            'breadcrumbs' => $this->mediabox->breadcrumbs()->values(),
+            'info' => $this->mediabox->getCurrentFolderInfo(),
+            'data' => MediaResource::collection($this->mediabox->all()),
+        ]);
     }
 
     /**
@@ -83,7 +89,7 @@ class MediaboxApiController extends Controller
      */
     public function rename(Request $request, File $file)
     {
-        return response()->json($this->mediabox->rename($file->filename(), $request->input('name')));
+        return response()->json($this->mediabox->rename($file->filename(), $request->all()));
     }
 
     /**
@@ -108,6 +114,44 @@ class MediaboxApiController extends Controller
     {
         return response()->json(
             $this->mediabox->delete($request->input('paths'))
+        );
+    }
+
+    /**
+     * Upload the passed in file to storage.
+     *
+     * @param  \Codrasil\Mediabox\Http\Requests\UploadRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(UploadRequest $request)
+    {
+        $this->mediabox->upload($request->file('file'), $request->input('parent'));
+
+        return back();
+    }
+
+    /**
+     * Download the specified file.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Codrasil\Mediabox\File  $file
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request, File $file)
+    {
+        return $this->mediabox->download($file);
+    }
+
+    /**
+     * Zip the given files.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function zip(Request $request)
+    {
+        return response()->json(
+            $this->mediabox->zip($request->input('files'), $request->input('parent'))
         );
     }
 }

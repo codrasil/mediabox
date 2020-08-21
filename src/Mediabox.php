@@ -363,6 +363,26 @@ class Mediabox extends Filesystem implements Contracts\MediaboxInterface
     }
 
     /**
+     * Retrieve the current directorie's meta info.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getCurrentFolderInfo()
+    {
+        return Collection::make([
+            'file' => $this->file($this->getBasePath()),
+            'name' => $this->getRootFolderName(),
+            'total' => $this->totalSize(),
+            'count' => $this->totalFileCount(),
+            'disk' => [
+                'memory' => $this->memoryUsage(),
+                'free' => $this->freeDiskSpace(),
+                'total' => $this->totalDiskSpace(),
+            ],
+        ]);
+    }
+
+    /**
      * Before calling the parent Filesystem class' methods,
      * append the root path to the path and target paths.
      *

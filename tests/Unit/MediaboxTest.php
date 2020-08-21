@@ -442,7 +442,7 @@ class MediaboxTest extends TestCase
      * @group  mediabox:unit
      * @return void
      */
-    public function it_can_download_the_file()
+    public function it_can_stream_the_url_of_the_file()
     {
         // Arrangements
         $basePath = $this->basePath;
@@ -451,6 +451,47 @@ class MediaboxTest extends TestCase
 
         // Actions
         $file = $mediabox->find($file);
+        $actual = $mediabox->stream($file);
+
+        // Assertions
+        $this->assertInstanceOf(BinaryFileResponse::class, $actual);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_download_a_file()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFile($file = 'anotherFile.txt', 'hello world.');
+
+        // Actions
+        $file = $mediabox->find($file);
+        $actual = $mediabox->download($file);
+
+        // Assertions
+        $this->assertInstanceOf(BinaryFileResponse::class, $actual);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_zip_and_download_a_folder()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($folder = 'My Folder');
+        $mediabox->addFile('My Folder/file.txt', 'hello world.');
+
+        // Actions
+        $file = $mediabox->find($folder);
         $actual = $mediabox->download($file);
 
         // Assertions
@@ -474,5 +515,30 @@ class MediaboxTest extends TestCase
 
         // Assertions
         $this->assertFileExists($basePath.DIRECTORY_SEPARATOR.$filename);
+    }
+
+    /**
+     * @test
+     * @group  mediabox:unit
+     * @return void
+     */
+    public function it_can_zip_files()
+    {
+        // Arrangements
+        $basePath = $this->basePath;
+        $mediabox = new Mediabox($basePath);
+        $mediabox->addFolder($parent = 'Documents');
+        $mediabox->addFolder($files[] = 'Documents/Bills');
+        $mediabox->addFolder('Documents/Bills/Water');
+        $mediabox->addFile('Documents/Bills/Water/wbill.txt', '800 moneys');
+        $mediabox->addFile($files[] = 'Documents/item1.txt', 'inside.');
+        $mediabox->addFile($files[] = 'Documents/item2.txt', 'hello world.');
+
+        // Actions
+        $actual = $mediabox->zip($files, $parent);
+
+        // Assertions
+        $this->assertInstanceOf(File::class, $actual);
+        $this->assertSame($parent.'.zip', $actual->name());
     }
 }

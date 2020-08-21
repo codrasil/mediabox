@@ -137,7 +137,7 @@ abstract class IconKeys
     {
         $mdi = self::MDI_FILE;
 
-        if (strpos($extension, 'folder_') !== false) {
+        if (strpos($extension, 'folder_') !== false && ! defined('self::MDI_FOLDER_'.strtoupper($extension))) {
             $mdi = self::MDI_FOLDER;
         }
 
@@ -145,6 +145,6 @@ abstract class IconKeys
             $mdi = constant('self::MDI_'.strtoupper($extension));
         }
 
-        return "icon-$extension $mdi";
+        return "icon $mdi";
     }
 }
