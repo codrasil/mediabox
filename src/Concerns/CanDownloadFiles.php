@@ -63,7 +63,7 @@ trait CanDownloadFiles
         }
 
         if ($file->isDir()) {
-            $file = $this->zip($file->getRealPath());
+            $file = $this->zip($file->filename(), $file->name());
         }
 
         $response = new BinaryFileResponse($file);
@@ -75,19 +75,29 @@ trait CanDownloadFiles
     /**
      * Zip the given file or folder.
      *
-     * @param  string $path
+     * @param  string|array $paths
+     * @param  string       $fileName
      * @return mixed
      */
-    public function zip($path)
+    public function zip($paths, $fileName = null)
     {
-        $zipFileName = $path.'.zip';
+        $zipFileName = $this->rootPath(
+            $fileName.DIRECTORY_SEPARATOR.($fileName ?? strtolower($this->getRootFolderName())).'.zip'
+        );
         $this->zip = new ZipArchive;
         $this->zip->open($zipFileName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
 
-        $this->zipFile($path);
+        foreach ((array) $paths as $path) {
+            if (is_dir($this->rootPath($path))) {
+                $this->zipFilesInDirectory($this->rootPath($path));
+            } else if (is_file($this->rootPath($path))) {
+                $this->zip->addFile($this->rootPath($path), basename($path));
+            }
+        }
+
         $this->zip->close();
 
-        return $zipFileName;
+        return new File($zipFileName, $this->getRootPath());
     }
 
     /**
@@ -97,14 +107,16 @@ trait CanDownloadFiles
      * @param  string $subDirectory
      * @return void
      */
-    protected function zipFile($directory, $subDirectory = null)
+    protected function zipFilesInDirectory($directory, $subDirectory = null, $i = 0)
     {
         $directory = rtrim($directory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-        $basename = basename($directory);
         $files = scandir($directory.$subDirectory);
+        $fullZipDirectory = str_replace('//', '/', rtrim(
+            basename($directory), DIRECTORY_SEPARATOR
+        ).DIRECTORY_SEPARATOR.$subDirectory.DIRECTORY_SEPARATOR);
 
         if (count($files) <= 2) {
-            $this->zip->addFromString($basename.DIRECTORY_SEPARATOR.'__EMPTY__', '');
+            $this->zip->addFromString($fullZipDirectory.'__EMPTY__', '');
         }
 
         foreach ($files as $file) {
@@ -113,41 +125,14 @@ trait CanDownloadFiles
             }
 
             if (is_dir($directory.$subDirectory.$file)) {
-                $this->zip->addEmptyDir($subDirectory.$file);
-                $this->zipFile(
-                    $directory,
-                    $subDirectory.$file.DIRECTORY_SEPARATOR
+                $this->zip->addEmptyDir($fullZipDirectory.$file);
+                $this->zipFilesInDirectory(
+                    $directory.$subDirectory,
+                    $file.DIRECTORY_SEPARATOR, ++$i
                 );
             } elseif (is_file($directory.$subDirectory.$file)) {
-                $this->zip->addFile($directory.$subDirectory.$file, $subDirectory.$file);
+                $this->zip->addFile($directory.$subDirectory.$file, $fullZipDirectory.$file);
             }
         }
-    }
-
-    /**
-     * Zip multiple files.
-     *
-     * @param  array  $paths
-     * @param  string $zipFileName
-     * @return mixed
-     */
-    public function zipMultiple($paths, $zipFileName = null)
-    {
-        $zipFileName = $this->rootPath(($zipFileName ?? strtolower($this->getRootFolderName())).'.zip');
-        $this->zip = new ZipArchive;
-        $this->zip->open($zipFileName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
-
-        foreach ((array) $paths as $path) {
-            if (is_dir($this->rootPath($path))) {
-                $dir = dirname($this->rootPath($path));
-                $this->zipFile($dir, dirname($path).DIRECTORY_SEPARATOR);
-            } else if (is_file($this->rootPath($path))) {
-                $this->zip->addFile($this->rootPath($path), $path);
-            }
-        }
-
-        $this->zip->close();
-
-        return new File($zipFileName, $this->getRootPath());
     }
 }
