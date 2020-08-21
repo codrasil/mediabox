@@ -61,7 +61,7 @@ return [
 
         'api' => [
             'controller' => MediaboxApiController::class,
-            'middlewares' => ['api', 'bindings'],
+            'middlewares' => ['api'],
             'name' => 'media',
             'prefix' => 'api/v1',
             'register' => true,
