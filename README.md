@@ -50,6 +50,7 @@ You may also run `composer demo:prep` to generate dummy files and folders for th
 
 * `PHP 7+`
 * `php-imagick` (optional; for generating thumbnails)
+* `illuminate/cache`: `^7.15`
 * `illuminate/filesystem`: `^7.11`
 * `symfony/http-foundation`: `^5.0`
 
@@ -184,8 +185,10 @@ $mediabox->delete(['Copy of Reminders', 'Copy of groceries.todo']);
 <br>
 
 #### Displaying & Downloading
-To display a file on a browser, use the `fetch` method.
+To display a file on a browser, use the `stream` or `fetch` method.
 ```php
+$mediabox->stream('/path/to/a/file.txt');
+// or
 $mediabox->fetch('/path/to/a/file.txt');
 ```
 

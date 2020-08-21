@@ -15,7 +15,8 @@
   ],
   "require": {
     "illuminate/filesystem": "^7.11",
-    "symfony/http-foundation": "^5.0"
+    "symfony/http-foundation": "^5.0",
+    "illuminate/cache": "^7.15"
   },
   "autoload": {
     "files": [
