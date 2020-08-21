@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 ### Changed
 
+## [1.1.1] - 2020-08-21
+### Changed
+- Modify MediaboxApiController's upload method's returned response
+
 <br>
 
 ## [1.1.0] - 2020-08-21
@@ -51,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <br>
 
 [Unreleased]: https://github.com/codrasil/mediabox/compare/v1.0.1...HEAD
+[1.1.1]: https://github.com/codrasil/mediabox/releases/tag/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/codrasil/mediabox/releases/tag/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/codrasil/mediabox/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/codrasil/mediabox/releases/tag/v1.0.0
