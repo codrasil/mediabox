@@ -127,7 +127,7 @@ class MediaboxApiController extends Controller
     {
         $this->mediabox->upload($request->file('file'), $request->input('parent'));
 
-        return back();
+        return response()->json(['success' => true]);
     }
 
     /**
